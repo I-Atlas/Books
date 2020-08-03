@@ -24,7 +24,8 @@
   "homepage": "https://github.com/I-Atlas/Books#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "sequelize": "^6.3.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
