@@ -1,0 +1,27 @@
+{
+  "development": {
+    "db": {
+    "username": "username",
+    "password": "password",
+    "database": "database_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "logging": false
+    },
+    "common": {
+      "jwtSecret": "secret",
+      "accessTokenExpiresInSec": 172800,
+      "refreshTokenExpiresInSec": 604800,
+      "accessTokenExpiresIn": "2days",
+      "refreshTokenExpiresIn": "7days",
+      "url": "http://localhost:6800",
+      "hashType": "md5",
+      "hashKey": "hashkey"
+    },
+    "mail": {
+      "email": "your@email.com",
+      "password": "password",
+      "service": "email"
+    }
+  }
+}
