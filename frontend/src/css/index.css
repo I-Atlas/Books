@@ -20,9 +20,6 @@ body, html, .App, #root, .auth-wrapper {
   width: 100%;
   height: 100%;
 }
-.books-logo {
-  width: 10%;
-}
 
 .navbar-light {
   background-color: #ffffff;
