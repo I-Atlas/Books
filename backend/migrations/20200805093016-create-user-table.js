@@ -11,7 +11,9 @@ module.exports = {
      */
      await queryInterface.createTable('users', {
        id: Sequelize.INTEGER,
-       name: Sequelize.STRING
+       name: Sequelize.STRING,
+       createdAt: Sequelize.DATE,
+       updatedAt: Sequelize.DATE,
       });
   },
 
@@ -20,7 +22,8 @@ module.exports = {
      * Add reverting commands here.
      *
      * Example:
-     * await queryInterface.dropTable('users');
      */
+    
+     await queryInterface.dropTable('users');
   }
 };

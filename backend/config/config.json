@@ -1,12 +1,13 @@
 {
+  
   "development": {
     "db": {
-    "username": "username",
-    "password": "password",
-    "database": "database_development",
-    "host": "127.0.0.1",
-    "dialect": "postgres",
-    "logging": false
+      "username": "fusion",
+      "password": "fusion",
+      "database": "book_store",
+      "host": "127.0.0.1",
+      "dialect": "postgres",
+      "logging": false
     },
     "common": {
       "jwtSecret": "secret",
