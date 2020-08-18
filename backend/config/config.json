@@ -3,7 +3,7 @@
     "db": {
       "username": "fusion",
       "password": "fusion",
-      "database": "book_store",
+      "database": "books",
       "host": "127.0.0.1",
       "dialect": "postgres",
       "logging": false
