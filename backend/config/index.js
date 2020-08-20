@@ -5,9 +5,9 @@ let localConfig
 let config = {
   development: {
     db: {
-      username: 'alexey',
-      password: 'alexey',
-      database: 'fusion_site',
+      username: 'fusion',
+      password: 'fusion',
+      database: 'books',
       host: '127.0.0.1',
       dialect: 'postgres',
       logging: false
@@ -27,7 +27,7 @@ let config = {
       quantityPicture: 5
     },
     mail: {
-      email: 'fusion.team.llc@gmail.com',
+      email: 'bolotov.iliya,w@gmail.com',
       password: '',
       service: 'gmail'
     }

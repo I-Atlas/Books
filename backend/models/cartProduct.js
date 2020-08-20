@@ -8,9 +8,9 @@ module.exports = (sequelize, Sequelize) => {
         },
   
         product_id: {
-            type: Sequelize.STRING,
-            notEmpty: true
-        },
+          type: Sequelize.STRING,
+          notEmpty: true
+        }
     },
 )
 

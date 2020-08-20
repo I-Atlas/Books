@@ -34,7 +34,7 @@ module.exports = (sequelize, Sequelize) => {
         },
 
         image: {
-            type: Sequelize.ARRAY
+            type: Sequelize.STRING
         },
 
         rating: {
