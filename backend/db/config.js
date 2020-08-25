@@ -1,4 +1,4 @@
 const config = require('../config')
-const env = 'development'
+const env = process.env.NODE_ENV || 'development'
 
 module.exports = { [env]: config.db }
