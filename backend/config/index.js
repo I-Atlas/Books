@@ -27,7 +27,7 @@ let config = {
       quantityPicture: 5
     },
     mail: {
-      email: 'bolotov.iliya.w@gmail.com',
+      email: 'iliya@gmail.com',
       password: '',
       service: 'gmail'
     }

@@ -6,13 +6,12 @@
     "configurations": [
         {
             "name": "Launch Program",
-            "program": "${workspaceFolder}/new_backend/app.js",
+            "program": "${workspaceFolder}/backend/app.js",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
         }
-        
     ]
 }
