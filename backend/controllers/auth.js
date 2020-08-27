@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const db = require('../models')
 
 require('dotenv').config()
-// const JWT= process.env.JWT
+// const JWT = process.env.JWT
 const secret= process.env.JWT_SECRET
 
 const login = async (req, res) => {

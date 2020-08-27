@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button"
 
 
 
-class Recovery extends Component {
+class RecoveryOld extends Component {
     constructor(props) {
         super(props)
 
@@ -65,4 +65,4 @@ class Recovery extends Component {
     }
 }
 
-export default Recovery
+export default RecoveryOld
