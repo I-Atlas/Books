@@ -1,22 +1,24 @@
-import React, { Component } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import { withStyles } from '@material-ui/core/styles';
-import { Header, Footer } from '../../../components';
+import React, { Component } from 'react'
+import { withRouter } from 'react-router';
+import { Avatar,
+         Button,
+         CssBaseline,
+         TextField,
+         FormControlLabel,
+         Checkbox,
+         Link,
+         Grid,
+         Typography,
+         Container,
+         withStyles } from '@material-ui/core'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import { Header, Footer } from '../../../components'
+import AuthService from "../../../../services/auth"
 
 const useStyles = theme => ({
     paper: {
         marginTop: theme.spacing(8),
-        marginBottom: theme.spacing(25),
+        marginBottom: theme.spacing(33),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -35,6 +37,114 @@ const useStyles = theme => ({
 })
 
 class Login extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            email: "",
+            emailError: "",
+            password: "",
+            passwordError: "",
+            message: "",
+            successful: false
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    errorsClear() {
+        this.setState({
+          emailError: '',
+          passwordError: '',
+        })
+    }
+
+    handleChange(event) {
+        this.errorsClear()
+        this.setState({
+            [event.target.name]: event.target.value
+        })
+    }
+
+    handleSubmit(event) {
+        event.preventDefault()
+
+        this.setState({
+            message: "",
+            successful: true
+          });
+
+        AuthService.login(
+            this.state.email,
+            this.state.password
+        )
+        .then (
+            () => {
+              this.props.history.push("/")
+              window.location.reload()
+            },
+            error => {
+              const resMessage =
+                (error.response &&
+                  error.response.data &&
+                  error.response.data.message) ||
+                error.message ||
+                error.toString()
+
+                if (error.response.data.message === 'User not found') {
+                    this.errorsClear()
+                    this.setState({ emailError: 'User not found' });
+                }
+            
+                if (error.response.data.message === 'Wrong email or password') {
+                    this.errorsClear()
+                    this.setState({ passwordError: error.response.data.message,
+                                    emailError: error.response.data.message
+                                 })
+                }
+
+              this.setState({
+                successful: false,
+                message: resMessage
+                })
+            }
+        )
+    }
+
+    // handleSubmit(event) {
+    //     try {
+    //         event.preventDefault()
+    //         this.setState({
+    //             message: "",
+    //             successful: true
+    //         })
+    //         AuthService.login(
+    //             this.state.email,
+    //             this.state.password
+    //         )
+    //         .then (
+    //             () => {
+    //                 this.props.history.push("/")
+    //                 window.location.reload()
+    //             }  
+    //         )
+    //     } catch (errors) {
+    //         const error = errors.toString()
+    //         if (error.response.data.message === 'User not found') {
+    //             this.errorsClear()
+    //             this.setState({ emailError: 'User not found' });
+    //         }
+        
+    //         if (error.response.data.message === 'Wrong email or password') {
+    //             this.errorsClear()
+    //             this.setState({ passwordError: error.response.data.message,
+    //                             emailError: error.response.data.message
+    //                         })
+    //         }
+    //     }
+    // }
+
     render() {
         const { classes } = this.props
         return (
@@ -50,7 +160,7 @@ class Login extends Component {
                     <Typography component="h1" variant="h5">
                     Sign in
                     </Typography>
-                    <form className={classes.form} noValidate>
+                    <form className={classes.form} onSubmit={this.handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -61,6 +171,10 @@ class Login extends Component {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        error={Boolean(this.state.emailError)}
+                        helperText={this.state.emailError}
+                        value={`${this.state.email}`}
+                        onChange={this.handleChange}
                     />
                     <TextField
                         variant="outlined"
@@ -72,6 +186,10 @@ class Login extends Component {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        error={Boolean(this.state.passwordError)}
+                        helperText={this.state.passwordError}
+                        value={`${this.state.password}`}
+                        onChange={this.handleChange}
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
@@ -83,7 +201,6 @@ class Login extends Component {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        href="/register"
                     >
                         Sign In
                     </Button>
@@ -108,4 +225,4 @@ class Login extends Component {
     }
 }
 
-export default withStyles(useStyles)(Login)
+export default withRouter(withStyles(useStyles)(Login))

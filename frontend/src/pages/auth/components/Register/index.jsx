@@ -1,29 +1,35 @@
 import React, { Component } from 'react'
-import { Avatar, Button, CssBaseline, TextField, Link, Grid, Typography, Container } from '@material-ui/core'
+import { Avatar,
+         Button,
+         CssBaseline,
+         TextField,
+         Link,
+         Grid,
+         Typography,
+         Container,
+         withStyles } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import { withStyles } from '@material-ui/core/styles'
 import { Header, Footer } from '../../../components'
-import axios from "axios"
 import AuthService from "../../../../services/auth"
 
 const useStyles = theme => ({
     paper: {
         marginTop: theme.spacing(8),
-        marginBottom: theme.spacing(24),
+        marginBottom: theme.spacing(32),
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.secondary.main
     },
     form: {
         width: '100%',
-        marginTop: theme.spacing(3),
+        marginTop: theme.spacing(3)
     },
     submit: {
-        margin: theme.spacing(3, 0, 2),
+        margin: theme.spacing(3, 0, 2)
     }
 })
 
@@ -33,17 +39,49 @@ class Register extends Component {
 
         this.state = {
             username: "",
+            usernameError: "",
             email: "",
+            emailError: "",
             password: "",
-            successful: false,
-            message: ""
+            passwordError: "",
+            message: "",
+            successful: false
         }
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    errorsClear() {
+        this.setState({
+          usernameError: '',
+          emailError: '',
+          passwordError: '',
+        })
+    }
+
+    formValidation() {
+        const emailValidation = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+        const spaceValidation = /^\S*$/
+
+        if (this.state.username.toString().length < 1 || !spaceValidation.test(this.state.username)) {
+            this.errorsClear();
+            return this.setState({ usernameError: 'Username is missing' })
+        }
+
+        if (!emailValidation.test(this.state.email)) {
+        this.errorsClear();
+        return this.setState({ emailError: 'Email must be email' })
+        }
+
+        if (this.state.password.toString().length < 6 || !spaceValidation.test(this.state.password)) {
+        this.errorsClear();
+        return this.setState({ passwordError: 'Password must contain at least 6 characters and no spaces' })
+        }
     }
 
     handleChange(event) {
+        this.errorsClear()
         this.setState({
             [event.target.name]: event.target.value
         })
@@ -52,21 +90,25 @@ class Register extends Component {
     handleSubmit(event) {
         event.preventDefault()
 
+        this.formValidation()
+
         this.setState({
             message: "",
             successful: false
-          });
+          })
 
-        AuthService.Register(
+        AuthService.register(
             this.state.username,
             this.state.email,
-            this.state.password
-        ).then(
+            this.state.password,
+        )
+        .then (
             response => {
               this.setState({
                 message: response.data.message,
                 successful: true
-              });
+              })
+              console.log(response.data.message)
             },
             error => {
               const resMessage =
@@ -74,12 +116,17 @@ class Register extends Component {
                   error.response.data &&
                   error.response.data.message) ||
                 error.message ||
-                error.toString();
+                error.toString()
+            
+                if (error.response.data.message === 'Email already used') {
+                    this.errorsClear()
+                    return this.setState({ emailError: error.response.data.message });
+                }
     
-              this.setState({
+            this.setState({
                 successful: false,
                 message: resMessage
-                });
+                })
             }
         )
     }
@@ -98,7 +145,10 @@ class Register extends Component {
                 <Typography component="h1" variant="h5">
                 Sign up
                 </Typography>
-                <form className={classes.form}  onSubmit={this.handleSubmit} noValidate>
+                {!this.state.successful && ( 
+                <form className={classes.form} onSubmit={this.handleSubmit}>
+                  
+                <React.Fragment>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                     <TextField
@@ -107,9 +157,11 @@ class Register extends Component {
                         required
                         fullWidth
                         id="userName"
-                        label="User Name"
+                        label="Username"
                         autoFocus
-                        value={this.state.username}
+                        error={Boolean(this.state.usernameError)}
+                        helperText={this.state.usernameError}
+                        value={`${this.state.username}`}
                         onChange={this.handleChange}
                     />
                     </Grid>
@@ -121,7 +173,9 @@ class Register extends Component {
                         id="email"
                         label="Email Address"
                         name="email"
-                        value={this.state.email}
+                        error={Boolean(this.state.emailError)}
+                        helperText={this.state.emailError}
+                        value={`${this.state.email}`}
                         onChange={this.handleChange}
                     />
                     </Grid>
@@ -134,7 +188,9 @@ class Register extends Component {
                         label="Password"
                         type="password"
                         id="password"
-                        value={this.state.password}
+                        error={Boolean(this.state.passwordError)}
+                        helperText={this.state.passwordError}
+                        value={`${this.state.password}`}
                         onChange={this.handleChange}
                     />
                     </Grid>
@@ -155,7 +211,23 @@ class Register extends Component {
                     </Link>
                     </Grid>
                 </Grid>
+                </React.Fragment>
+                
+
+                
                 </form>
+                )}
+                {this.state.successful && (
+                    <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    >
+                    Successfull
+                    </Button>
+                )}
             </div>
             </Container>
             <Footer />

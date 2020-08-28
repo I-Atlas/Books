@@ -22,7 +22,7 @@ class Header extends Component {
         return (
             <React.Fragment>
                 <Toolbar className={classes.toolbar}>
-                    <Button href="/login">
+                    <Button href="/">
                         <Typography
                         component="h2"
                         variant="h5"
