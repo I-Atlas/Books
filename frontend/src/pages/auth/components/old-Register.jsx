@@ -3,7 +3,7 @@ import axios from "axios"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 
-class Register extends Component {
+class RegisterOld extends Component {
     constructor(props) {
         super(props)
 
@@ -80,4 +80,4 @@ class Register extends Component {
     }
 }
 
-export default Register
+export default RegisterOld

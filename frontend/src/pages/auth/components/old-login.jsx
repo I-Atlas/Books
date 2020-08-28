@@ -3,7 +3,7 @@ import axios from "axios"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 
-class Login extends Component {
+class LoginOld extends Component {
     constructor(props) {
         super(props)
 
@@ -81,4 +81,4 @@ class Login extends Component {
     }
 }
 
-export default Login
+export default LoginOld

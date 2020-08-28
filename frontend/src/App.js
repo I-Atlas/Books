@@ -1,11 +1,16 @@
 import React from 'react'
-import { Auth }  from './pages'
+import { BrowserRouter as Router } from "react-router-dom"
+import { useRoutes } from './routes'
 
 function App() {
+  const routes = useRoutes(false)
   return (
-    <div className="App">
-      <Auth />
-    </div>
+    <Router>
+      <div className="App">
+        {routes}
+        {/* <Auth /> */}
+      </div>
+    </Router>
   )
 }
 
