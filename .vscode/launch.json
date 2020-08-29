@@ -5,13 +5,21 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/backend/app.js",
+            "name": "Launch Chrome",
             "request": "launch",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        }
+            "type": "pwa-chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/frontend/src"
+        },
+
+        // {
+        //     // "name": "Launch Program",
+        //     // "program": "${workspaceFolder}/backend/app.js",
+        //     // "request": "launch",
+        //     // "skipFiles": [
+        //     //     "<node_internals>/**"
+        //     // ],
+        //     // "type": "pwa-node"
+        // }
     ]
 }

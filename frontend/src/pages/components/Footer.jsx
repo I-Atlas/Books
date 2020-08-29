@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import { withStyles, Container, Typography, Link, Grid } from '@material-ui/core';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
+      <Link color="inherit" href="https://github.com/I-Atlas/Books">
+        Books
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -31,16 +28,33 @@ class Footer extends Component {
         return (
             <React.Fragment>
                 <footer className={classes.footer}>
-                    <Container maxWidth="lg">
-                        <Typography variant="h6" align="right" gutterBottom>
-                        Books
-                        </Typography>
-                        <Typography variant="subtitle1" align="left" color="textSecondary" component="p">
-                        About
-                        </Typography>
+                    <Container maxWidth="sm">
                         <Copyright />
                     </Container>
                 </footer>
+                {/* <Container maxWidth="md" component="footer" className={classes.footer}>
+                <Grid container spacing={4} justify="space-evenly">
+                  {footers.map((footer) => (
+                    <Grid item xs={6} sm={3} key={footer.title}>
+                      <Typography variant="h6" color="textPrimary" gutterBottom>
+                        {footer.title}
+                      </Typography>
+                      <ul>
+                        {footer.description.map((item) => (
+                          <li key={item}>
+                            <Link href="#" variant="subtitle1" color="textSecondary">
+                              {item}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </Grid>
+                  ))}
+                </Grid>
+                <Box mt={5}>
+                  <Copyright />
+                </Box>
+              </Container> */}
             </React.Fragment>
         )
     }

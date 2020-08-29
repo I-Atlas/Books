@@ -1,5 +1,37 @@
 const db = require('../models')
 
+async function getBooks(req, res, next) {
+    try {
+      const filterOptinons = {
+        ...(req.query.name
+          ? {
+            name: {
+                [Sequelize.Op.iLike]: `%${req.query.name}%`,
+              },
+            }
+          : {}),
+        ...(req.query.category
+          ? {
+                category: req.query.category,
+            }
+          : {})
+        }
+  
+      const books = await db.Book.findAndCountAll({
+        where: filterOptinons,
+        limit: 10,
+        offset: +req.query.offset,
+        order: [[req.query.order_item, req.query.order_type]]
+      })
+  
+      return res.status(200).json({ books })
+
+    } catch (error) {
+        console.log('Get All Books Error:', error)
+        return res.status(500).json({ error: error.message })
+    }
+  }
+
 const getAllBooks = async (req, res) => {
     try {
         const bookList = await db.Book.findAll();
@@ -92,6 +124,7 @@ const deleteBook = async (req, res) => {
 
 module.exports = {
     getAllBooks,
+    getBooks,
     createNewBook,
     updateBookInfo,
     deleteBook

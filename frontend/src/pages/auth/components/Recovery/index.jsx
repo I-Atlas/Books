@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import HelpRounded from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import { withStyles } from '@material-ui/core/styles';
-import { Header, Footer } from '../../../components';
+import { Avatar,
+         Button,
+         CssBaseline,
+         TextField,
+         Grid,
+         Typography,
+         Container,
+         withStyles } from '@material-ui/core'
+import HelpRounded from '@material-ui/icons/HelpRounded'
+import { Header, Footer } from '../../../components'
 
 const useStyles = theme => ({
     paper: {
         marginTop: theme.spacing(8),
-        marginBottom: theme.spacing(42),
+        marginBottom: theme.spacing(50),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

@@ -9,8 +9,8 @@ class UserService {
   }
 
   getUserContent() {
-    return axios.get(API_URL + 'user', { headers: authHeader() })
+    return axios.get(API_URL + 'users', { headers: authHeader() })
   }
 }
 
-export default new UserService();
+export default new UserService()
