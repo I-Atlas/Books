@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.FLOAT
   }, {
     sequelize,
-    modelName: 'OrderBook',
+    modelName: 'OrderBook'
   });
   return OrderBook;
 };

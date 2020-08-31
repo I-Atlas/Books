@@ -2,7 +2,7 @@ const db = require('../models')
 
 async function getBooks(req, res, next) {
     try {
-      const filterOptinons = {
+      const filterOptions = {
         ...(req.query.name
           ? {
             name: {
@@ -17,12 +17,18 @@ async function getBooks(req, res, next) {
           : {})
         }
   
-      const books = await db.Book.findAndCountAll({
-        where: filterOptinons,
-        limit: 10,
+      const dbQuery = {
+        where: filterOptions,
+        
         offset: +req.query.offset,
         order: [[req.query.order_item, req.query.order_type]]
-      })
+      }
+
+      if (req.query.limit !== 0) {
+          dbQuery.limit = req.query.limit || 10;
+      }
+
+      const books = await db.Book.findAndCountAll(dbQuery)
   
       return res.status(200).json({ books })
 
@@ -57,7 +63,7 @@ const createNewBook = async (req, res) => {
     } = req.body
     
     try {
-        db.Book.create({
+        await db.Book.create({
             name,
             description,
             price,
@@ -89,7 +95,7 @@ const updateBookInfo = async (req, res) => {
     } = req.body
     
     try {
-        db.Book.update({
+        await db.Book.update({
             name,
             description,
             price,

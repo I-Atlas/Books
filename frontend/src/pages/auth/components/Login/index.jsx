@@ -14,6 +14,12 @@ import { Avatar,
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { Header, Footer } from '../../../components'
 import AuthService from "../../../../services/auth"
+import { Snackbar } from '@material-ui/core'
+import MuiAlert from '@material-ui/lab/Alert'
+
+const Alert = (props) => {
+    return <MuiAlert elevation={6} variant="filled" {...props} />
+}
 
 const useStyles = theme => ({
     paper: {
@@ -46,11 +52,30 @@ class Login extends Component {
             password: "",
             passwordError: "",
             message: "",
+            open: false,
+            setOpen: false,
             successful: false
         }
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleClick = this.handleClick.bind(this)
+        this.handleClose = this.handleClose.bind(this)
+    }
+
+    handleClick() {
+        this.setState({
+            setOpen: true
+        })
+    }
+    
+    handleClose(event, reason) {
+        if (reason === 'clickaway') {
+            return
+        }
+        this.setState({
+            setOpen: false
+        })
     }
 
     errorsClear() {
@@ -67,22 +92,29 @@ class Login extends Component {
         })
     }
 
-    handleSubmit(event) {
+    async timeout(ms) {
+        await new Promise(resolve => setTimeout(resolve, ms))
+      }
+
+    async handleSubmit(event) {
         event.preventDefault()
 
         this.setState({
             message: "",
-            successful: true
-          });
+            successful: false
+        })
 
         AuthService.login(
             this.state.email,
             this.state.password
         )
         .then (
-            () => {
-              this.props.history.push("/")
-              window.location.reload()
+            async () => {
+                this.setState({
+                    successful: true
+                })
+                this.props.history.push("/")
+                window.location.reload()
             },
             error => {
               const resMessage =
@@ -112,39 +144,6 @@ class Login extends Component {
         )
     }
 
-    // handleSubmit(event) {
-    //     try {
-    //         event.preventDefault()
-    //         this.setState({
-    //             message: "",
-    //             successful: true
-    //         })
-    //         AuthService.login(
-    //             this.state.email,
-    //             this.state.password
-    //         )
-    //         .then (
-    //             () => {
-    //                 this.props.history.push("/")
-    //                 window.location.reload()
-    //             }  
-    //         )
-    //     } catch (errors) {
-    //         const error = errors.toString()
-    //         if (error.response.data.message === 'User not found') {
-    //             this.errorsClear()
-    //             this.setState({ emailError: 'User not found' });
-    //         }
-        
-    //         if (error.response.data.message === 'Wrong email or password') {
-    //             this.errorsClear()
-    //             this.setState({ passwordError: error.response.data.message,
-    //                             emailError: error.response.data.message
-    //                         })
-    //         }
-    //     }
-    // }
-
     render() {
         const { classes } = this.props
         return (
@@ -153,7 +152,6 @@ class Login extends Component {
                 <Container component="main" maxWidth="xs"> 
                 <CssBaseline />
                 <div className={classes.paper}>
-                    
                     <Avatar className={classes.avatar}>
                     <LockOutlinedIcon />
                     </Avatar>
@@ -201,9 +199,27 @@ class Login extends Component {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        // onClick={this.handleClick}
                     >
                         Sign In
                     </Button>
+                    {/* {this.state.successful ? (
+                        <React.Fragment>
+                            <Snackbar open={this.state.open} autoHideDuration={3000} onClose={this.handleClose}>
+                                <Alert onClose={this.handleClose} severity="success">
+                                    This is a success message!
+                                </Alert>
+                            </Snackbar>
+                        </React.Fragment>
+                        ) : (
+                        <React.Fragment>
+                            <Snackbar open={this.state.open} autoHideDuration={3000} onClose={this.handleClose}>
+                                <Alert onClose={this.handleClose} severity="error">
+                                    This is a error message!
+                                </Alert>
+                            </Snackbar>
+                        </React.Fragment>
+                        )} */}
                     <Grid container>
                         <Grid item xs>
                         <Link href="/recovery" variant="body2">

@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     category: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Book',
+    modelName: 'Book'
   });
   return Book;
 };

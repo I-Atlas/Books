@@ -36,36 +36,40 @@ const login = async (req, res) => {
 }
 
 const register = async (req, res) => {
-    const { username, email, password } = req.body
-    const user = await db.User.findOne({ where: { email } })
-
-    if (user) {
-        return res.status(400).json({
-            message: 'Email already used'
-        })
-
-    } else {
-        const hashedPassword = await bcrypt.hash(password, 12)
-
-        try {
+    try {
+        
+        const { username, email, password } = req.body
+        const user = await db.User.findOne({ where: { email } })
+    
+        if (user) {
+            return res.status(400).json({
+                message: 'Email already used'
+            })
+    
+        } else {
+            const hashedPassword = await bcrypt.hash(password, 12)
+    
+            
             await db.User.create({
                 username,
                 email,
                 password: hashedPassword
-               
+                
             })
 
             return res.status(201).json({ message: "Account successfully created!" })
+                
             
-        } catch (error) {
-            console.log('Register Error:', error);
-            return res.status(500).json({error: error.message})
         }
+    } catch (error) {
+        console.log('Register Error:', error);
+        return res.status(500).json({error: error.message})
+        
     }
 }
 
 const profile = async (req, res) => {
-    const { email } = req.body
+    const { email } = req.params;
 
     try {
       const user = await db.User.findOne({ where: { email } })
@@ -76,12 +80,16 @@ const profile = async (req, res) => {
   
       const orders = await db.Order.findAll({
         include: [
-          {
-            model: db.Book,
-            as: "Books",
-            attributes: ["id", "name", "price"]
-          }
+            {
+                model: db.User
+            }
         ]
+        //   {
+        //     model: db.Book,
+        //     as: "Books",
+        //     attributes: ["id", "name", "price"]
+        //   }
+        // ]
       })
   
       return res.status(200).json({ user, orders });
