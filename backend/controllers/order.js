@@ -20,13 +20,31 @@ const getOrders = async (req, res) => {
     try {
       const saveOrder = await Order.create({ userId })
   
-      req.body.books.forEach(async (item) => {
+      const checkBooks = req.body.books.map(async (item) => {
+        try {
+          const book = await db.Book.findOne({ where: { id: item.id } });
+          if (!book) {
+            return { bookId: item.id, isOk: false };
+          }
+          return { bookId: item.id, isOk: true };
+        } catch (error) {
+          return { bookId: item.id, isOk: false };
+        }
+      })
+
+      const checkBookResult = await Promise.all(checkBooks);
+
+      const resultChecking = checkBookResult.filter((item) => !item.isOk)
+
+      const booksPromises = req.body.books.map(async (item) => {
         const book = await db.Book.findOne({ where: { id: item.id } })
   
         if (!book) {
-          return res.status(404).json({
-            message: "Book not found."
-          })
+          // return res.status(404).json({
+            throw {
+              message: `Book with id ${item.id} not found.`
+            }
+          // })
         }
   
         const order = {
@@ -34,9 +52,11 @@ const getOrders = async (req, res) => {
           bookId: item.id
         }
   
-        await BookOrder.create(order);
+        return BookOrder.create(order);
       })
-  
+      
+      await Promise.all(booksPromises);
+
       return res.status(201).json({
         message: `Order №${saveOrder.id} successfully created.`
       })

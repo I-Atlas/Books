@@ -9,7 +9,7 @@ import { Avatar,
          Container,
          withStyles } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import { Header, Footer } from '../../../components'
+import { Header, Footer, Snack } from '../../../components'
 import AuthService from "../../../../services/auth"
 
 const useStyles = theme => ({
@@ -138,6 +138,7 @@ class Register extends Component {
             <Header />
             <Container component="main" maxWidth="xs">
             <CssBaseline />
+            
             <div className={classes.paper}>
                 <Avatar className={classes.avatar}>
                 <LockOutlinedIcon />
@@ -218,15 +219,9 @@ class Register extends Component {
                 </form>
                 )}
                 {this.state.successful && (
-                    <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    >
-                    Successfull
-                    </Button>
+                    <React.Fragment>
+                        <Snack />
+                    </React.Fragment>
                 )}
             </div>
             </Container>

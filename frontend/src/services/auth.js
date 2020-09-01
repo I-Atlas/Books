@@ -3,34 +3,39 @@ import axios from "axios"
 const API_URL = "http://localhost:5000/"
 
 class AuthService {
-  register(username, email, password) {
+  async timeout(ms) {
+    await new Promise(resolve => setTimeout(resolve, ms))
+  }
+
+  async register(username, email, password) {
       return axios
       .post(API_URL + "register", {
         username,
         email,
         password
       })
+      .then(
+        await this.timeout(2000)
+      )
+      
   }
 
-  login(email, password) {
-    return axios
+  async login(email, password) {
+    const response = await axios
       .post(API_URL + "login", {
         email,
         password
       })
-      .then(response => {
-        if (response.data.token) {
-          localStorage.setItem("user", JSON.stringify(response.data))
-        }
-        if (response.data.message) {
-          console.log(response.data.message)
-        }
-        // console.log(response.data.token)
-        return response.data
-      })
+    if (response.data.token) {
+      localStorage.setItem("user", JSON.stringify(response.data))
+    }
+    if (response.data.message) {
+      console.log(response.data.message)
+    }
+    return response.data
   }
 
-  logout() {
+  async logout() {
     localStorage.removeItem("user");
   }
 

@@ -8,11 +8,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
+      book_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-            model: "Users",
+            model: "Books",
             key: "id"
         },
         onDelete: 'SET NULL',

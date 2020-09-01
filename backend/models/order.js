@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         through: "OrderBook",
         foreignKey: "order_id",
         otherKey: "book_id",
-        otherKey: "price",
+        // otherKey: "price",
       });
     }
   };
@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Order',
+    modelName: 'Order'
   });
   return Order;
 };

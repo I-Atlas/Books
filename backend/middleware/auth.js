@@ -58,7 +58,7 @@ const refreshToken = async (req, res, next) => {
       token,
       refresh_token: new_refresh_token,
     });
-  } catch {
+  } catch (e) {
     res.status(401).json({
       message: "Invalid Token",
     });

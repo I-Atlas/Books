@@ -11,12 +11,13 @@ const createToken = (user, expiresIn) => {
         userId: user.id,
       },
       secret,
-      { expiresIn: expiresIn }
+      { expiresIn }
     )
 
     return token;
   } catch (e) {
-    console.log(e);
+    console.log(`createToken error: ${e}`);
+    throw { status: 500, message: e.message };
   }
 }
 
