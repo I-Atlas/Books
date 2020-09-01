@@ -28,10 +28,11 @@ const getOneUser = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
     const { id } = req.params
-    const { first_name, last_name, avatar } = req.body
+    const { username, first_name, last_name, avatar } = req.body
 
     try {
         await db.User.update({
+            username,
             first_name,
             last_name,
             avatar

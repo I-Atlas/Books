@@ -5,5 +5,5 @@ export default function authHeader() {
       return { Authorization: `Bearer ${user.token}` }
     } else {
       return {}
-    }
+  }
 }

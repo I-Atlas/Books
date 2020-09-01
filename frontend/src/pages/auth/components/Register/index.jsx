@@ -70,13 +70,13 @@ class Register extends Component {
         }
 
         if (!emailValidation.test(this.state.email)) {
-        this.errorsClear();
-        return this.setState({ emailError: 'Email must be email' })
+            this.errorsClear();
+            return this.setState({ emailError: 'Email must be email' })
         }
 
         if (this.state.password.toString().length < 6 || !spaceValidation.test(this.state.password)) {
-        this.errorsClear();
-        return this.setState({ passwordError: 'Password must contain at least 6 characters and no spaces' })
+            this.errorsClear();
+            return this.setState({ passwordError: 'Password must contain at least 6 characters and no spaces' })
         }
     }
 
@@ -95,7 +95,7 @@ class Register extends Component {
         this.setState({
             message: "",
             successful: false
-          })
+        })
 
         AuthService.register(
             this.state.username,
@@ -146,9 +146,7 @@ class Register extends Component {
                 <Typography component="h1" variant="h5">
                 Sign up
                 </Typography>
-                {!this.state.successful && ( 
                 <form className={classes.form} onSubmit={this.handleSubmit}>
-                  
                 <React.Fragment>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -213,16 +211,7 @@ class Register extends Component {
                     </Grid>
                 </Grid>
                 </React.Fragment>
-                
-
-                
                 </form>
-                )}
-                {this.state.successful && (
-                    <React.Fragment>
-                        <Snack />
-                    </React.Fragment>
-                )}
             </div>
             </Container>
             <Footer />

@@ -1,7 +1,7 @@
 import React from "react"
 import { Switch, Route, Redirect } from "react-router-dom"
 import { Login, Register, Recovery } from "../pages/auth/components"
-import { Home } from "../pages/main/components"
+import { Home, Profile } from "../pages/main/components"
 
 export const useRoutes = isAuth => {
     // if (isAuth) {
@@ -35,6 +35,9 @@ export const useRoutes = isAuth => {
             </Route>
             <Route path="/recovery" exact>
                 <Recovery />
+            </Route>
+            <Route path="/profile/:email" exact>
+                <Profile />
             </Route>
             <Redirect to="/" />
         </Switch> 

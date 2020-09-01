@@ -8,6 +8,6 @@ const { isAuth, refreshToken } = require("../middleware/auth")
 router.post('/login', validators('auth.login'), controller.login)
 router.post('/register', validators('auth.register'), controller.register)
 router.post('/refresh', refreshToken)
-router.get('/profile/:email', /*isAuth,*/ controller.profile)
+router.get('/profile/:email', isAuth, controller.profile)
 
 module.exports = router
