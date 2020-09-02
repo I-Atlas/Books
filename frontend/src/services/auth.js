@@ -17,7 +17,6 @@ class AuthService {
       .then(
         await this.timeout(2000)
       )
-      
   }
 
   async login(email, password) {

@@ -19,6 +19,8 @@ const login = async (req, res) => {
                 id: user.id,
                 username: user.username,
                 email: user.email,
+                avatar: user.avatar,
+                createdAt: user.createdAt,
                 token:`Bearer ${token}`
             })
         }
@@ -37,7 +39,6 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
     try {
-        
         const { username, email, password } = req.body
         const user = await db.User.findOne({ where: { email } })
     
@@ -49,22 +50,17 @@ const register = async (req, res) => {
         } else {
             const hashedPassword = await bcrypt.hash(password, 12)
     
-            
             await db.User.create({
                 username,
                 email,
                 password: hashedPassword
-                
             })
 
             return res.status(201).json({ message: "Account successfully created!" })
-                
-            
         }
     } catch (error) {
         console.log('Register Error:', error);
         return res.status(500).json({error: error.message})
-        
     }
 }
 

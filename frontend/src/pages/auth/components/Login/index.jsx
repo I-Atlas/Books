@@ -113,7 +113,7 @@ class Login extends Component {
                 this.setState({
                     successful: true
                 })
-                this.props.history.push("/")
+                this.props.history.push(`/profile/${this.state.email}`)
                 window.location.reload()
             },
             error => {
@@ -149,92 +149,92 @@ class Login extends Component {
         return (
             <React.Fragment>
                 <Header />
-                <Container component="main" maxWidth="xs"> 
-                <CssBaseline />
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                    Sign in
-                    </Typography>
-                    <form className={classes.form} onSubmit={this.handleSubmit}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        error={Boolean(this.state.emailError)}
-                        helperText={this.state.emailError}
-                        value={`${this.state.email}`}
-                        onChange={this.handleChange}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        error={Boolean(this.state.passwordError)}
-                        helperText={this.state.passwordError}
-                        value={`${this.state.password}`}
-                        onChange={this.handleChange}
-                    />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        // onClick={this.handleClick}
-                    >
-                        Sign In
-                    </Button>
-                    {/* {this.state.successful ? (
-                        <React.Fragment>
-                            <Snackbar open={this.state.open} autoHideDuration={3000} onClose={this.handleClose}>
-                                <Alert onClose={this.handleClose} severity="success">
-                                    This is a success message!
-                                </Alert>
-                            </Snackbar>
-                        </React.Fragment>
-                        ) : (
-                        <React.Fragment>
-                            <Snackbar open={this.state.open} autoHideDuration={3000} onClose={this.handleClose}>
-                                <Alert onClose={this.handleClose} severity="error">
-                                    This is a error message!
-                                </Alert>
-                            </Snackbar>
-                        </React.Fragment>
-                        )} */}
-                    <Grid container>
-                        <Grid item xs>
-                        <Link href="/recovery" variant="body2">
-                            Forgot password?
-                        </Link>
+                    <Container component="main" maxWidth="xs"> 
+                    <CssBaseline />
+                    <div className={classes.paper}>
+                        <Avatar className={classes.avatar}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        <form className={classes.form} onSubmit={this.handleSubmit}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            error={Boolean(this.state.emailError)}
+                            helperText={this.state.emailError}
+                            value={`${this.state.email}`}
+                            onChange={this.handleChange}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            error={Boolean(this.state.passwordError)}
+                            helperText={this.state.passwordError}
+                            value={`${this.state.password}`}
+                            onChange={this.handleChange}
+                        />
+                        <FormControlLabel
+                            control={<Checkbox value="remember" color="primary" />}
+                            label="Remember me"
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            // onClick={this.handleClick}
+                        >
+                            Sign In
+                        </Button>
+                        {/* {this.state.successful ? (
+                            <React.Fragment>
+                                <Snackbar open={this.state.open} autoHideDuration={3000} onClose={this.handleClose}>
+                                    <Alert onClose={this.handleClose} severity="success">
+                                        This is a success message!
+                                    </Alert>
+                                </Snackbar>
+                            </React.Fragment>
+                            ) : (
+                            <React.Fragment>
+                                <Snackbar open={this.state.open} autoHideDuration={3000} onClose={this.handleClose}>
+                                    <Alert onClose={this.handleClose} severity="error">
+                                        This is a error message!
+                                    </Alert>
+                                </Snackbar>
+                            </React.Fragment>
+                            )} */}
+                        <Grid container>
+                            <Grid item xs>
+                            <Link href="/recovery" variant="body2">
+                                Forgot password?
+                            </Link>
+                            </Grid>
+                            <Grid item>
+                            <Link href="/register" variant="body2">
+                                {"Don't have an account? Sign Up"}
+                            </Link>
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                        <Link href="/register" variant="body2">
-                            {"Don't have an account? Sign Up"}
-                        </Link>
-                        </Grid>
-                    </Grid>
-                    </form>
-                </div>
-                </Container>
+                        </form>
+                    </div>
+                    </Container>
                 <Footer />
             </React.Fragment>
         )
