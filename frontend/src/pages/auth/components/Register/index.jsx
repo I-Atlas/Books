@@ -108,6 +108,7 @@ class Register extends Component {
                 message: response.data.message,
                 successful: true
               })
+              this.props.history.push(`/login`)
               console.log(response.data.message)
             },
             error => {

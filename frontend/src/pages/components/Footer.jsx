@@ -16,8 +16,10 @@ function Copyright() {
 
 const useStyles = theme => ({
   footer: {
+    // position: 'absolute',
     backgroundColor: theme.palette.background.paper,
     marginTop: 'auto',
+    marginBottom: 0,
     padding: theme.spacing(6, 0),
   },
 });

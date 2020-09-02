@@ -9,18 +9,35 @@ class UserService {
   }
   
 
-  async update(username, first_name, last_name, avatar) {
-    return axios
-    .put(API_URL + `update/${this.user.id}`, {
-      username,
-      first_name,
-      last_name,
-      avatar
+  async update(username, first_name, last_name, password, avatar ) {
+    const formData = new FormData()
+    formData.append('avatar', avatar, avatar.name)
+    formData.append('username', username)
+    formData.append('first_name', first_name)
+    formData.append('last_name', last_name)
+    formData.append('password', password)
+    const response = await axios
+    .patch(API_URL + `users/${this.user.id}`, formData, {
+      // username,
+      // first_name,
+      // last_name,
+      // password,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${this.user.token}`
+      }
     })
+    if (response.data) {
+      localStorage.setItem("user", JSON.stringify(response.data))
+    }
+    if (response.data.message) {
+      console.log(response.data.message)
+    }
+    return response.data
   }
 
   getUserContent() {
-    return axios.get(API_URL + 'profile', { headers: authHeader() })
+    return axios.get(API_URL + 'users/', { headers: authHeader() })
   }
 }
 
