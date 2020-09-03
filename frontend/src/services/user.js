@@ -10,8 +10,11 @@ class UserService {
   
 
   async update(username, first_name, last_name, password, avatar ) {
-    const formData = new FormData()
-    formData.append('avatar', avatar, avatar.name)
+    const formData = new FormData();
+    debugger
+    if (avatar) {
+      formData.append('avatar', avatar, avatar.name)
+    }
     formData.append('username', username)
     formData.append('first_name', first_name)
     formData.append('last_name', last_name)
@@ -29,11 +32,11 @@ class UserService {
     })
     if (response.data) {
       localStorage.setItem("user", JSON.stringify(response.data))
+      return response.data
     }
     if (response.data.message) {
       console.log(response.data.message)
     }
-    return response.data
   }
 
   getUserContent() {

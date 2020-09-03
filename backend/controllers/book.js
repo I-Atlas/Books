@@ -1,54 +1,98 @@
-const db = require('../models')
+const db = require("../models");
+const {
+    Op
+} = db.Sequelize;
 
 async function getBooks(req, res, next) {
+    const {
+        name,
+        category,
+        price,
+        order_type = "ASC",
+        order_item = "name",
+        limit = 10,
+        offset = 0,
+    } = req.query;
+
     try {
-      const filterOptions = {
-        ...(req.query.name
-          ? {
-            name: {
-                [Sequelize.Op.iLike]: `%${req.query.name}%`,
-              },
+        const filterOptions = {};
+
+        if (name) {
+            filterOptions.name = {
+                [Op.iLike]: `%${name}%`
             }
-          : {}),
-        ...(req.query.category
-          ? {
-                category: req.query.category,
+        };
+
+        if (category) {
+            filterOptions.category = {
+                category: category
             }
-          : {})
         }
-  
-      const dbQuery = {
-        where: filterOptions,
-        
-        offset: +req.query.offset,
-        order: [[req.query.order_item, req.query.order_type]]
-      }
 
-      if (req.query.limit !== 0) {
-          dbQuery.limit = req.query.limit || 10;
-      }
+        // if (price) {
+        //     filterOptions.price = {
+        //         // price: price
+        //         [Op.iLike]: `%${price}%`,
+        //     }
+        // }
+        // ...(name
+        //   ? {
+        //     name: {
+        //         [Op.iLike]: `%${name}%`,
+        //       },
+        //     }
+        //   : {}),
+        // ...(category
+        //   ? {
+        //         category: category,
+        //     }
+        //   : {}),
+        // ...(price
+        //     ? {
+        //       price: {
+        //           [Op.iLike]: `%${price}%`,
+        //         },
+        //       }
+        //     : {}),
 
-      const books = await db.Book.findAndCountAll(dbQuery)
-  
-      return res.status(200).json({ books })
+        const dbQuery = {
+            where: filterOptions,
+            offset: +offset,
+            order: [
+                [order_item, order_type]
+            ],
+        };
 
+        if (limit !== 0) {
+            dbQuery.limit = limit || 9;
+        }
+
+        const books = await db.Book.findAndCountAll(dbQuery);
+        // const books = await db.Book.findAndCountAll({})
+
+        return res.status(200).json({
+            books
+        });
     } catch (error) {
-        console.log('Get All Books Error:', error)
-        return res.status(500).json({ error: error.message })
+        console.log("Get Books Error:", error);
+        return res.status(500).json({
+            error: error.message
+        });
     }
-  }
+}
 
 const getAllBooks = async (req, res) => {
     try {
         const bookList = await db.Book.findAll();
 
-        return res.json(bookList)
-
+        return res.json(bookList);
     } catch (error) {
-        console.log('Get All Books Error:', error)
-        return res.status(500).json({ error: error.message })
+        console.log("Get All Books Error:", error);
+        return res.status(500).json({
+            error: error.message
+        });
     }
-}
+};
 
 const createNewBook = async (req, res) => {
     const {
@@ -59,9 +103,9 @@ const createNewBook = async (req, res) => {
         author,
         image,
         rating,
-        category
-    } = req.body
-    
+        category,
+    } = req.body;
+
     try {
         await db.Book.create({
             name,
@@ -71,16 +115,19 @@ const createNewBook = async (req, res) => {
             author,
             image,
             rating,
-            category
-        })
+            category,
+        });
 
-        return res.status(201).json({ message: "Book successfully created!" })
-
+        return res.status(201).json({
+            message: "Book successfully created!"
+        });
     } catch (error) {
-        console.log('Create New Book Error:', error)
-        return res.status(500).json({ error: error.message })
+        console.log("Create New Book Error:", error);
+        return res.status(500).json({
+            error: error.message
+        });
     }
-}
+};
 
 const updateBookInfo = async (req, res) => {
     const {
@@ -91,9 +138,9 @@ const updateBookInfo = async (req, res) => {
         author,
         image,
         rating,
-        category
-    } = req.body
-    
+        category,
+    } = req.body;
+
     try {
         await db.Book.update({
             name,
@@ -103,35 +150,53 @@ const updateBookInfo = async (req, res) => {
             author,
             image,
             rating,
-            category
-        }, { where: { id } })
+            category,
+        }, {
+            where: {
+                id
+            }
+        });
 
-        return res.status(200).json({ message: "Book information successfully updated!" })
-
+        return res
+            .status(200)
+            .json({
+                message: "Book information successfully updated!"
+            });
     } catch (error) {
-        console.log('Update Book Information Error:', error)
-        return res.status(500).json({ error: error.message })
+        console.log("Update Book Information Error:", error);
+        return res.status(500).json({
+            error: error.message
+        });
     }
-}
+};
 
 const deleteBook = async (req, res) => {
-    const { id } = req.body
+    const {
+        id
+    } = req.body;
 
     try {
-        await db.Book.destroy({ where: { id } })
-        
-        return res.status(200).json({ message: "Book successfully deleted." })
+        await db.Book.destroy({
+            where: {
+                id
+            }
+        });
 
+        return res.status(200).json({
+            message: "Book successfully deleted."
+        });
     } catch (error) {
-        console.log('Delete Book Error:', error);
-        return res.status(500).json({error: error.message})
+        console.log("Delete Book Error:", error);
+        return res.status(500).json({
+            error: error.message
+        });
     }
-}
+};
 
 module.exports = {
     getAllBooks,
     getBooks,
     createNewBook,
     updateBookInfo,
-    deleteBook
-}
+    deleteBook,
+};

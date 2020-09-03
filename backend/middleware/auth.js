@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const db = require('../models')
-const { createToken } = require("../utils/auth");
+const {
+  createToken
+} = require("../utils/auth");
 
 require('dotenv').config()
 const secret = process.env.JWT_SECRET
@@ -45,7 +47,9 @@ const refreshToken = async (req, res, next) => {
     jwt.verify(refresh_token, secret);
 
     const user = await db.User.findOne({
-      where: { refresh_token },
+      where: {
+        refresh_token
+      },
     });
 
     const token = createToken(user, 60 * 15);

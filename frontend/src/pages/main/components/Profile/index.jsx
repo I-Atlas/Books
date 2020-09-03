@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import moment from "moment";
 import {
-  Box,
   Grid,
   TextField,
   Container,
   Paper,
   Avatar,
   Button,
-  useMediaQuery,
   Typography,
   withStyles,
 } from "@material-ui/core";
@@ -23,28 +21,27 @@ const useStyles = (theme) => ({
     color: theme.palette.text.secondary,
     margin: theme.spacing(4),
     display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   text: {
     marginTop: theme.spacing(1),
     color: theme.palette.text.secondary,
   },
-  details: {
-    display: "flex",
-  },
   avatar: {
     marginLeft: "auto",
-    height: "110px",
-    width: "110px",
-    flexShrink: 0,
-    flexGrow: 0,
+    marginRight: "auto",
+    margin: theme.spacing(1),
+    height: "120px",
+    width: "120px",
   },
   form: {
-    textAlign: 'center',
-    width: '100%',
+    textAlign: "center",
+    width: "100%",
   },
   submit: {
     margin: theme.spacing(2, 0, 2),
-  }
+  },
 });
 
 class Profile extends Component {
@@ -64,8 +61,8 @@ class Profile extends Component {
       successful: false,
     };
 
-    this.imageInput = React.createRef()
-    this.user = JSON.parse(localStorage.getItem('user'))
+    // this.imageInput = React.createRef()
+    this.user = JSON.parse(localStorage.getItem("user"));
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -93,7 +90,7 @@ class Profile extends Component {
 
   handleInputChange(event) {
     this.setState({
-      avatar: event.target.files[0]
+      avatar: event.target.files[0],
     });
   }
 
@@ -123,21 +120,20 @@ class Profile extends Component {
     )
       .then((response) => {
         this.setState({
-          message: response.data.message,
+          message: response.message,
           successful: true,
         });
-        console.log(response.data.message);
+        console.log(response.message);
       })
       .catch((error) => {
-          
-          const resMessage =
+        const resMessage =
           (error.response &&
             error.response.data &&
             error.response.data.message) ||
-            error.message ||
-            error.toString();
-            debugger;
-        
+          error.message ||
+          error.toString();
+        // debugger;
+
         if (error.response.data.message === "Username is missing") {
           this.errorsClear();
           return this.setState({ usernameError: error.response.data.message });
@@ -163,27 +159,26 @@ class Profile extends Component {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <Paper className={classes.paper}>
-                <div className={classes.details}>
-                  <div className={classes.info}>
-                    <Typography variant="h3">{this.user.username}</Typography>
-                    {(this.user.first_name && this.user.last_name) ?
-                     <Typography className={classes.text} variant="body1">
-                        {`${this.user.first_name} ${this.user.last_name}`}
-                    </Typography>
-                    : null
-                    }
-                    <Typography className={classes.text} variant="body1">
-                      {this.user.email}
-                    </Typography>
-                    <Typography className={classes.text} variant="body1">
-                      Joined at: {moment(this.user.createdAt).format("DD/MM/YYYY")}
-                    </Typography>
-                  </div>
-                </div>
                 <Avatar
                   className={classes.avatar}
-                  src={this.user.avatar ? this.user.avatar : `${(<AccountCircleIcon />)}`}
+                  src={
+                    this.user.avatar
+                      ? `http://localhost:5000/images/${this.user.avatar}`
+                      : `${(<AccountCircleIcon />)}`
+                  }
                 />
+                <Typography variant="h3">{this.user.username}</Typography>
+                {this.user.first_name && this.user.last_name ? (
+                  <Typography className={classes.text} variant="body1">
+                    {`${this.user.first_name} ${this.user.last_name}`}
+                  </Typography>
+                ) : null}
+                <Typography className={classes.text} variant="body1">
+                  {this.user.email}
+                </Typography>
+                <Typography className={classes.text} variant="body1">
+                  Joined at: {moment(this.user.createdAt).format("DD/MM/YYYY")}
+                </Typography>
               </Paper>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -225,7 +220,6 @@ class Profile extends Component {
                     fullWidth
                     name="last_name"
                     label="Last Name"
-                    type="last_name"
                     id="last_name"
                     autoComplete="last_name"
                     value={`${this.state.last_name}`}

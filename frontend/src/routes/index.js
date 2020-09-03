@@ -39,6 +39,9 @@ export const useRoutes = isAuth => {
             <Route path="/profile/:id" exact>
                 <Profile />
             </Route>
+            <Route path="/" exact>
+                <Home />
+            </Route>
             {/* <Redirect to="/" /> */}
         </Switch> 
     )
