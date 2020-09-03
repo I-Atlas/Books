@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const db = require('../models')
 
 require('dotenv').config()
-const secret= process.env.JWT_SECRET
+const secret= process.env.JWT_SECRET || "helloworldiliya"
 
 const login = async (req, res) => {
     const { email, password } = req.body
@@ -19,9 +19,11 @@ const login = async (req, res) => {
                 id: user.id,
                 username: user.username,
                 email: user.email,
+                first_name: user.first_name,
+                last_name: user.last_name,
                 avatar: user.avatar,
-                createdAt: user.createdAt,
-                token:`Bearer ${token}`
+                token:`Bearer ${token}`,
+                createdAt: user.createdAt
             })
         }
         

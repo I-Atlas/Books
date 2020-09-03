@@ -15,11 +15,12 @@ class AuthService {
         password
       })
       .then(
-        await this.timeout(2000)
+        await this.timeout(1000)
       )
   }
 
   async login(email, password) {
+    localStorage.removeItem("user")
     const response = await axios
       .post(API_URL + "login", {
         email,

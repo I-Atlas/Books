@@ -146,7 +146,7 @@ class BookModal extends Component {
     const { classes } = this.props
     return (
       <React.Fragment>
-          <Fab color="primary"
+          <Fab color="secondary"
             aria-label="add"
             className={classes.fab}
             onClick={this.handleClick}

@@ -56,6 +56,8 @@ class Login extends Component {
             setOpen: false,
             successful: false
         }
+        
+        this.user = JSON.parse(localStorage.getItem('user'))
 
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -99,6 +101,8 @@ class Login extends Component {
     async handleSubmit(event) {
         event.preventDefault()
 
+        // AuthService.logout()
+
         this.setState({
             message: "",
             successful: false
@@ -109,12 +113,12 @@ class Login extends Component {
             this.state.password
         )
         .then (
-            async () => {
+            (data) => {
                 this.setState({
                     successful: true
                 })
-                this.props.history.push(`/profile/${this.state.email}`)
-                window.location.reload()
+                this.props.history.push(`/profile/${data.id}`)
+                // window.location.reload()
             },
             error => {
               const resMessage =
@@ -126,7 +130,7 @@ class Login extends Component {
 
                 if (error.response.data.message === 'User not found') {
                     this.errorsClear()
-                    this.setState({ emailError: 'User not found' });
+                    this.setState({ emailError: 'User not found' })
                 }
             
                 if (error.response.data.message === 'Wrong email or password') {
