@@ -12,25 +12,21 @@ class Snack extends Component {
 
         this.state = {
             open: false,
-            setOpen: false
         }
 
-        this.handleClick = this.handleClick.bind(this)
+        // this.handleClick = this.handleClick.bind(this)
         this.handleClose = this.handleClose.bind(this)
     }
 
-    handleClick() {
-        this.setState({
-            setOpen: true
-        })
-    }
+    // handleOpen() {
+    //     this.setState({
+    //         open: true
+    //     })
+    // }
     
-    handleClose(event, reason) {
-        if (reason === 'clickaway') {
-            return
-        }
+    handleClose(event) {
         this.setState({
-            setOpen: false
+            open: false
         })
     }
 

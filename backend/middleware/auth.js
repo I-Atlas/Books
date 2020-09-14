@@ -30,7 +30,7 @@ const verifyToken = (req, res, next) => {
 const isAuth = (req, res, next) => {
   try {
     const token = req.headers["Authorization"].split(" ")[1];
-    const email = jwt.verify(token, secret).email;
+    const { email } = jwt.verify(token, secret);
     req.body.email = email;
     next();
   } catch (error) {
@@ -42,7 +42,7 @@ const isAuth = (req, res, next) => {
 
 const refreshToken = async (req, res, next) => {
   try {
-    const refresh_token = req.body.refresh_token;
+    const { refresh_token } = req.body;
     console.log(refresh_token);
     jwt.verify(refresh_token, secret);
 

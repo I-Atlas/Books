@@ -11,7 +11,7 @@ class UserService {
 
   async update(username, first_name, last_name, password, avatar ) {
     const formData = new FormData();
-    debugger
+    // debugger
     if (avatar) {
       formData.append('avatar', avatar, avatar.name)
     }
@@ -21,10 +21,6 @@ class UserService {
     formData.append('password', password)
     const response = await axios
     .patch(API_URL + `users/${this.user.id}`, formData, {
-      // username,
-      // first_name,
-      // last_name,
-      // password,
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${this.user.token}`

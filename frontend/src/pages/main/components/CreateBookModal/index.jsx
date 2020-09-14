@@ -13,9 +13,11 @@ import {
 import { Rating } from '@material-ui/lab'
 import AddIcon from "@material-ui/icons/Add";
 import BookService from "../../../../services/book";
+import { Snack } from "../../../components";
 
 const useStyles = (theme) => ({
   title: {
+    color: theme.palette.text.secondary,
     textAlign: "center",
   },
   fab: {
@@ -23,6 +25,13 @@ const useStyles = (theme) => ({
     right: theme.spacing(3),
     bottom: theme.spacing(3),
   },
+  form: {
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  },
+  upload: {
+    margin: theme.spacing(2, 0, 2),
+  }
 });
 
 class BookModal extends Component {
@@ -39,11 +48,15 @@ class BookModal extends Component {
       author: "",
       rating: 0,
       ratingError: "",
+      category: "",
+      categoryError: "",
+      image: null,
       message: "",
       successful: false,
       open: false,
     };
 
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -58,6 +71,12 @@ class BookModal extends Component {
   }
 
   formValidation() {}
+
+  handleInputChange(event) {
+    this.setState({
+      image: event.target.files[0],
+    });
+  }
 
   handleClick() {
     this.setState({
@@ -94,7 +113,9 @@ class BookModal extends Component {
       this.state.price,
       this.state.example,
       this.state.author,
-      this.state.rating
+      this.state.rating,
+      this.state.category,
+      this.state.image
     ).then(
       (response) => {
         this.setState({
@@ -121,10 +142,10 @@ class BookModal extends Component {
           return this.setState({ priceError: error.response.data.message });
         }
 
-        if (error.response.data.message === "Rating must contain numbers") {
-          this.errorsClear();
-          return this.setState({ ratingError: error.response.data.message });
-        }
+        // if (error.response.data.message === "Rating must contain numbers") {
+        //   this.errorsClear();
+        //   return this.setState({ categoryError: error.response.data.message });
+        // }
 
         this.setState({
           successful: false,
@@ -138,6 +159,9 @@ class BookModal extends Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
+        {/* { this.state.successful && (
+          <Snack />
+        ) } */}
         <Fab
           color="secondary"
           aria-label="add"
@@ -151,7 +175,7 @@ class BookModal extends Component {
             {"Create new book"}
           </DialogTitle>
           <DialogContent>
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} className={classes.form}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
@@ -215,30 +239,50 @@ class BookModal extends Component {
                   />
                 </Grid>
                 <Grid item xs={12}>
+                  <TextField
+                    name="category"
+                    variant="outlined"
+                    fullWidth
+                    label="Category"
+                    id="category"
+                    // error={Boolean(this.state.categoryError)}
+                    // helperText={this.state.categoryError}
+                    value={`${this.state.category}`}
+                    onChange={this.handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
                   <Rating 
                     name='rating'
-                    defaultValue={0}
+                    size="large"
+                    defaultValue={1}
                     precision={1}
                     max={5}
                     value={this.state.rating}
                     onChange={this.handleChange}
                     // error={Boolean(this.state.ratingError)}
                     // helperText={this.state.ratingError}
-                  
                   />
-                  {console.log(this.state.rating)}
-                  {/* <TextField
-                    name="rating"
-                    variant="outlined"
-                    fullWidth
-                    label="Rating"
-                    id="rating"
-                    error={Boolean(this.state.ratingError)}
-                    helperText={this.state.ratingError}
-                    value={this.state.rating}
-                    onChange={this.handleChange}
-                  /> */}
                 </Grid>
+                <Grid item xs>
+                    <Button
+                      variant="contained"
+                      fullWidth
+                      className={classes.submit}
+                      component="label"
+                      className={classes.upload}
+                    >
+                      Upload File
+                      <input
+                        onChange={this.handleInputChange}
+                        name="image"
+                        type="file"
+                        accept="image/jpeg,image/png,image/jpg,image/gif"
+                        style={{ display: "none" }}
+                      />
+                    </Button>
+                    <span>{this.state.image ? this.state.image.name : 'No file selected'}</span>
+                  </Grid>
               </Grid>
 
               <DialogActions>

@@ -68,19 +68,20 @@ const register = async (req, res) => {
                 message: 'Email already used'
             })
 
-        } else {
-            const hashedPassword = await bcrypt.hash(password, 12)
-
-            await db.User.create({
-                username,
-                email,
-                password: hashedPassword
-            })
-
-            return res.status(201).json({
-                message: "Account successfully created!"
-            })
         }
+        
+        const hashedPassword = await bcrypt.hash(password, 12)
+
+        await db.User.create({
+            username,
+            email,
+            password: hashedPassword
+        })
+
+        return res.status(201).json({
+            message: "Account successfully created!"
+        })
+        
     } catch (error) {
         console.log('Register Error:', error);
         return res.status(500).json({

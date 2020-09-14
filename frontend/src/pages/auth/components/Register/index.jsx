@@ -110,8 +110,8 @@ class Register extends Component {
               })
               this.props.history.push(`/login`)
               console.log(response.data.message)
-            },
-            error => {
+            })
+        .catch(error => {
               const resMessage =
                 (error.response &&
                   error.response.data &&

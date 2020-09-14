@@ -26,7 +26,6 @@ const useStyles = (theme) => ({
   },
   text: {
     marginTop: theme.spacing(1),
-    color: theme.palette.text.secondary,
   },
   avatar: {
     marginLeft: "auto",
@@ -111,6 +110,7 @@ class Profile extends Component {
       successful: false,
     });
 
+    debugger
     UserService.update(
       this.state.username,
       this.state.first_name,
@@ -129,19 +129,19 @@ class Profile extends Component {
         const resMessage =
           (error.response &&
             error.response.data &&
-            error.response.data.message) ||
+            error.response.message) ||
           error.message ||
           error.toString();
-        // debugger;
+        debugger;
 
-        if (error.response.data.message === "Username is missing") {
+        if (error.response.message === "Username is missing") {
           this.errorsClear();
-          return this.setState({ usernameError: error.response.data.message });
+          return this.setState({ usernameError: error.response.message });
         }
 
-        if (error.response.data.error) {
+        if (error.response.error) {
           this.errorsClear();
-          return this.setState({ passwordError: error.response.data.error });
+          return this.setState({ passwordError: error.response.error });
         }
 
         this.setState({
@@ -256,6 +256,7 @@ class Profile extends Component {
                         style={{ display: "none" }}
                       />
                     </Button>
+                    <span>{this.state.avatar ? this.state.avatar.name : 'No file selected'}</span>
                   </Grid>
                   <Grid item xs>
                     <Button
