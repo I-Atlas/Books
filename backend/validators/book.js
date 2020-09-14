@@ -8,6 +8,6 @@ module.exports = {
       min: 1
     }),
     check('price', 'Price must contain numbers').optional().isNumeric(),
-    check('rating', 'Rating must contain numbers').optional().isNumeric()
+    // check('category', 'Category must be Fantasy or Adventure or Romance').optional().isNumeric()
   ]
 };

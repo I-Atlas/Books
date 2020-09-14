@@ -6,7 +6,8 @@ const {
     isAuth
 } = require("../middleware/auth")
 
-router.get('/', isAuth, controller.getOrders)
+router.use(isAuth);
+router.get('/', /* isAdminOrOwner */ controller.getOrders)
 router.post('/create', controller.createOrder)
 
 module.exports = router

@@ -1,24 +1,13 @@
 import React, { Component } from "react";
-import { Container, withStyles } from "@material-ui/core";
-import { BookCard } from "../../components";
+import { Container, withStyles, Paper, Typography } from "@material-ui/core";
+import { BookCard, SortBookModal } from "../../components";
 import { Header, Footer } from "../../../components";
 
 const useStyles = (theme) => ({
   container: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
-  },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  cardMedia: {
-    paddingTop: "56.25%", // 16:9
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
+  }
 });
 
 class Home extends Component {
@@ -29,6 +18,7 @@ class Home extends Component {
     return (
       <React.Fragment>
         <Header />
+        <SortBookModal />
         <Container maxWidth="lg">
           <BookCard />
         </Container>

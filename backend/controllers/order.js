@@ -1,5 +1,7 @@
 const db = require('../models')
 
+
+
 const getOrders = async (req, res) => {
   const {
     userId
@@ -24,7 +26,8 @@ const getOrders = async (req, res) => {
 
 const createOrder = async (req, res, next) => {
   const {
-    userId
+    userId,
+    books
   } = req.body
 
   try {
@@ -32,23 +35,23 @@ const createOrder = async (req, res, next) => {
       userId
     })
 
-    const checkBooks = req.body.books.map(async (item) => {
+    const checkBooks = books.map(async (item) => {
       try {
         const book = await db.Book.findOne({
           where: {
             id: item.id
           }
         });
-        if (!book) {
-          return {
-            bookId: item.id,
-            isOk: false
-          };
-        }
         return {
           bookId: item.id,
-          isOk: true
+          isOk: !!book
         };
+        // if (!book) {
+        //   return {
+        //     bookId: item.id,
+        //     isOk: false
+        //   };
+        // }
       } catch (error) {
         return {
           bookId: item.id,
@@ -61,20 +64,20 @@ const createOrder = async (req, res, next) => {
 
     const resultChecking = checkBookResult.filter((item) => !item.isOk)
 
-    const booksPromises = req.body.books.map(async (item) => {
-      const book = await db.Book.findOne({
-        where: {
-          id: item.id
-        }
-      })
+    const booksPromises = books.map(async (item) => {
+      // const book = await db.Book.findOne({
+      //   where: {
+      //     id: item.id
+      //   }
+      // })
 
-      if (!book) {
-        // return res.status(404).json({
-        throw {
-          message: `Book with id ${item.id} not found.`
-        }
-        // })
-      }
+      // if (!book) {
+      //   // return res.status(404).json({
+      //   throw {
+      //     message: `Book with id ${item.id} not found.`
+      //   }
+      //   // })
+      // }
 
       const order = {
         orderId: saveOrder.id,

@@ -94,10 +94,6 @@ class Login extends Component {
         })
     }
 
-    async timeout(ms) {
-        await new Promise(resolve => setTimeout(resolve, ms))
-      }
-
     async handleSubmit(event) {
         event.preventDefault()
 
@@ -119,8 +115,8 @@ class Login extends Component {
                 })
                 this.props.history.push(`/profile/${data.id}`)
                 // window.location.reload()
-            },
-            error => {
+            })
+        .catch(error => {
               const resMessage =
                 (error.response &&
                   error.response.data &&
