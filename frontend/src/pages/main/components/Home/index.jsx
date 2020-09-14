@@ -7,7 +7,7 @@ const useStyles = (theme) => ({
   container: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8),
-  }
+  },
 });
 
 class Home extends Component {

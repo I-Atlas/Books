@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router } from "react-router-dom"
 import { useRoutes } from './routes'
 import AuthService from "./services/auth"
+import { ToastWrapper } from "./pages/components"
 
 class App extends Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class App extends Component {
   return (
     <Router>
       <div className="App">
+      <ToastWrapper />
         {routes}
         {/* <Auth /> */}
       </div>

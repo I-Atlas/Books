@@ -10,10 +10,10 @@ import {
   withStyles,
   Fab,
 } from "@material-ui/core";
-import { Rating } from '@material-ui/lab'
+import { Rating } from "@material-ui/lab";
 import AddIcon from "@material-ui/icons/Add";
 import BookService from "../../../../services/book";
-import { Snack } from "../../../components";
+import { successToast } from "../../../components/Toast";
 
 const useStyles = (theme) => ({
   title: {
@@ -31,7 +31,7 @@ const useStyles = (theme) => ({
   },
   upload: {
     margin: theme.spacing(2, 0, 2),
-  }
+  },
 });
 
 class BookModal extends Component {
@@ -100,8 +100,6 @@ class BookModal extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    // this.formValidation()
-
     this.setState({
       message: "",
       successful: false,
@@ -113,22 +111,21 @@ class BookModal extends Component {
       this.state.price,
       this.state.example,
       this.state.author,
-      this.state.rating,
       this.state.category,
+      this.state.rating,
       this.state.image
-    ).then(
-      (response) => {
+    )
+      .then((response) => {
         this.setState({
-          message: response.data.message,
+          message: response.message,
           successful: true,
         });
-        console.log(response.data.message);
-      },
-      (error) => {
+        successToast(response.message);
+        console.log(response.message);
+      })
+      .catch((error) => {
         const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
+          (error.response && error.response.data && error.response.message) ||
           error.message ||
           error.toString();
 
@@ -142,26 +139,17 @@ class BookModal extends Component {
           return this.setState({ priceError: error.response.data.message });
         }
 
-        // if (error.response.data.message === "Rating must contain numbers") {
-        //   this.errorsClear();
-        //   return this.setState({ categoryError: error.response.data.message });
-        // }
-
         this.setState({
           successful: false,
           message: resMessage,
         });
-      }
-    );
+      });
   }
 
   render() {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        {/* { this.state.successful && (
-          <Snack />
-        ) } */}
         <Fab
           color="secondary"
           aria-label="add"
@@ -252,37 +240,40 @@ class BookModal extends Component {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <Rating 
-                    name='rating'
+                  <Rating
+                    name="rating"
+                    id="rating"
                     size="large"
                     defaultValue={1}
                     precision={1}
                     max={5}
                     value={this.state.rating}
                     onChange={this.handleChange}
-                    // error={Boolean(this.state.ratingError)}
-                    // helperText={this.state.ratingError}
                   />
                 </Grid>
                 <Grid item xs>
-                    <Button
-                      variant="contained"
-                      fullWidth
-                      className={classes.submit}
-                      component="label"
-                      className={classes.upload}
-                    >
-                      Upload File
-                      <input
-                        onChange={this.handleInputChange}
-                        name="image"
-                        type="file"
-                        accept="image/jpeg,image/png,image/jpg,image/gif"
-                        style={{ display: "none" }}
-                      />
-                    </Button>
-                    <span>{this.state.image ? this.state.image.name : 'No file selected'}</span>
-                  </Grid>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    className={classes.submit}
+                    component="label"
+                    className={classes.upload}
+                  >
+                    Upload File
+                    <input
+                      onChange={this.handleInputChange}
+                      name="image"
+                      type="file"
+                      accept="image/jpeg,image/png,image/jpg,image/gif"
+                      style={{ display: "none" }}
+                    />
+                  </Button>
+                  <span>
+                    {this.state.image
+                      ? this.state.image.name
+                      : "No file selected"}
+                  </span>
+                </Grid>
               </Grid>
 
               <DialogActions>

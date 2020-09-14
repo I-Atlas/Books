@@ -7,22 +7,22 @@ import {
   Card,
   Grid,
   Typography,
-  TextField,
   withStyles,
   IconButton,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Input,
+  InputAdornment
 } from "@material-ui/core";
-import {
-  Favorite,
-  AddShoppingCart,
-  Create,
-  Search,
-} from "@material-ui/icons";
+import { Favorite, AddShoppingCart, Create, Search } from "@material-ui/icons";
 import { Pagination } from "@material-ui/lab";
 import BookService from "../../../../services/book";
 
 const useStyles = (theme) => ({
   container: {
-    paddingTop: theme.spacing(8),
+    paddingTop: theme.spacing(7),
     paddingBottom: theme.spacing(8),
   },
   card: {
@@ -31,13 +31,17 @@ const useStyles = (theme) => ({
     flexDirection: "column",
   },
   cardMedia: {
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   cardContent: {
     flexGrow: 1,
   },
-  pag: {
-    alignItems: "center",
+  search: {
+    paddingTop: theme.spacing(2),
+    margin: theme.spacing(1),
+  },
+  pagination: {
+    flexGrow: 1,
   },
 });
 
@@ -61,15 +65,6 @@ class BookCard extends Component {
     this.handlePageChange = this.handlePageChange.bind(this);
     this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
     this.pageSizes = [3, 6, 9];
-    // this.books = BookService.getAllBooks().then((response) => {
-    //   const responseArray = [];
-    //   for (let i in response) {
-    //     responseArray.push(response[i]);
-    //   }
-    //   this.setState({
-    //     res: responseArray,
-    //   });
-    // });
   }
 
   componentDidMount() {
@@ -101,7 +96,7 @@ class BookCard extends Component {
     BookService.getAllBooks(params)
       .then((data) => {
         const { books, totalPages } = data;
-        
+
         this.setState({
           res: books,
           count: totalPages,
@@ -146,50 +141,39 @@ class BookCard extends Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <div className={classes.pag}>
-          <TextField
-            name="category"
-            variant="outlined"
-            fullWidth
-            label="Search by book title"
-            id="category"
-            // error={Boolean(this.state.categoryError)}
-            // helperText={this.state.categoryError}
-            value={`${searchBook}`}
-            onChange={this.handleSearchBook}
-          />
-          <IconButton type="submit" aria-label="search" onClick={this.getBooks}>
-            <Search />
-          </IconButton>
-          <div className="mt-3">
-            {"Items per Page: "}
-            <select onChange={this.handlePageSizeChange} value={pageSize}>
-              {this.pageSizes.map((size) => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
-
-            <Pagination
-              className="my-3"
-              count={count}
-              page={page}
-              siblingCount={1}
-              boundaryCount={1}
-              variant="outlined"
-              shape="rounded"
-              onChange={this.handlePageChange}
-            />
-          </div>
-          <Grid
-            container
-            className={classes.container}
-            spacing={4}
-            justify="flex-start"
-            alignItems="flex-start"
-          >
-            {res && res.map((book, id) => (
+        <div className={classes.search}>
+          <Grid container>
+            <FormControl fullWidth>
+              <InputLabel htmlFor="search">Search</InputLabel>
+              <Input
+                id="search"
+                value={`${searchBook}`}
+                onChange={this.handleSearchBook}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      type="submit"
+                      aria-label="search"
+                      onClick={this.getBooks}
+                      edge="end"
+                    >
+                      <Search />
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          </Grid>
+        </div>
+        <Grid
+          container
+          className={classes.container}
+          spacing={4}
+          justify="flex-start"
+          alignItems="flex-start"
+        >
+          {res &&
+            res.map((book, id) => (
               <Grid item key={id} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardHeader title={book.name} subheader={book.author} />
@@ -221,6 +205,39 @@ class BookCard extends Component {
                 </Card>
               </Grid>
             ))}
+        </Grid>
+        <div className={classes.pagination}>
+          <Grid container justify="center">
+            <FormControl variant="outlined" size="small">
+            <Select onChange={this.handlePageSizeChange} value={pageSize}>
+              {this.pageSizes.map((size) => (
+                <MenuItem key={size} value={size}>
+                  {size}
+                </MenuItem>
+              ))}
+            </Select>
+            </FormControl>
+            <Pagination
+              color="primary"
+              variant="outlined"
+              shape="rounded"
+              count={count}
+              page={page}
+              siblingCount={1}
+              boundaryCount={1}
+              onChange={this.handlePageChange}
+              size="large"
+              justify="center"
+            />
+            <FormControl variant="outlined" size="small">
+            <Select onChange={this.handlePageSizeChange} value={pageSize}>
+              {this.pageSizes.map((size) => (
+                <MenuItem key={size} value={size}>
+                  {size}
+                </MenuItem>
+              ))}
+            </Select>
+            </FormControl>
           </Grid>
         </div>
       </React.Fragment>

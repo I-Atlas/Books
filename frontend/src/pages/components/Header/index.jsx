@@ -72,9 +72,6 @@ class Header extends Component {
             noWrap
             className={classes.toolbarTitle}
           ></Typography>
-          <IconButton>
-            <SearchIcon />
-          </IconButton>
           <IconButton
             aria-controls="simple-menu"
             aria-haspopup="true"
@@ -96,12 +93,17 @@ class Header extends Component {
             >
               <MenuItem onClick={this.handleClose}>Sing In</MenuItem>
             </Link>
-
             <Link
               to="/register"
               style={{ textDecoration: "none", display: "block" }}
             >
               <MenuItem onClick={this.handleClose}>Sing Up</MenuItem>
+            </Link>
+            <Link
+              to="/profile"
+              style={{ textDecoration: "none", display: "block" }}
+            >
+              <MenuItem onClick={this.handleClose}>Profile</MenuItem>
             </Link>
           </Menu>
           <IconButton>

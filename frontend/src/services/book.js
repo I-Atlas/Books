@@ -16,53 +16,44 @@ class BookService {
     formData.append('author', author)
     formData.append('category', category)
     formData.append('rating', rating)
-    
+
     const response = await axios
       .post(API_URL + "create", formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         }
       })
-      if (response.data.message) {
-        console.log(response.data.message)
-      }
-    
+    if (response.data) {
+      return response.data
     }
-
-    // async getAllBooks() {
-    //   const response = await axios
-    //   .get(API_URL + "", {})
-  
-    //   if (response.data) {
-    //     return response.data
-    //   }
-      
-    //   if (response.data.message) {
-    //     console.log(response.data.message)
-    //   }
-    // }
-
-    async getAllBooks(params) {
-      const response = await axios
-      .get(API_URL + "", { params })
-      
-      if (response.data) {
-        return response.data
-      }
-      
-      if (response.data.message) {
-        console.log(response.data.message)
-      }
+    if (response.data.message) {
+      console.log(response.data.message)
     }
+  }
 
-  async update() {
+  async getAllBooks(params) {
     const response = await axios
-    .get(API_URL + "all", {})
+      .get(API_URL + "", {
+        params
+      })
 
     if (response.data) {
       return response.data
     }
-    
+
+    if (response.data.message) {
+      console.log(response.data.message)
+    }
+  }
+
+  async update() {
+    const response = await axios
+      .get(API_URL + "all", {})
+
+    if (response.data) {
+      return response.data
+    }
+
     if (response.data.message) {
       console.log(response.data.message)
     }
@@ -70,12 +61,12 @@ class BookService {
 
   async delete(id) {
     const response = await axios
-    .post(API_URL + `delete?id=${id}`, {})
+      .post(API_URL + `delete?id=${id}`, {})
 
     if (response.data) {
       return response.data
     }
-    
+
     if (response.data.message) {
       console.log(response.data.message)
     }
