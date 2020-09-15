@@ -14,7 +14,7 @@ import {
   FormControl,
   InputLabel,
   Input,
-  InputAdornment
+  InputAdornment,
 } from "@material-ui/core";
 import { Favorite, AddShoppingCart, Create, Search } from "@material-ui/icons";
 import { Pagination } from "@material-ui/lab";
@@ -42,6 +42,9 @@ const useStyles = (theme) => ({
   },
   pagination: {
     flexGrow: 1,
+  },
+  select: {
+    margin: theme.spacing(1),
   },
 });
 
@@ -208,14 +211,18 @@ class BookCard extends Component {
         </Grid>
         <div className={classes.pagination}>
           <Grid container justify="center">
-            <FormControl variant="outlined" size="small">
-            <Select onChange={this.handlePageSizeChange} value={pageSize}>
-              {this.pageSizes.map((size) => (
-                <MenuItem key={size} value={size}>
-                  {size}
-                </MenuItem>
-              ))}
-            </Select>
+            <FormControl
+              variant="outlined"
+              size="small"
+              className={classes.select}
+            >
+              <Select onChange={this.handlePageSizeChange} value={pageSize}>
+                {this.pageSizes.map((size) => (
+                  <MenuItem key={size} value={size}>
+                    {size}
+                  </MenuItem>
+                ))}
+              </Select>
             </FormControl>
             <Pagination
               color="primary"
@@ -229,15 +236,15 @@ class BookCard extends Component {
               size="large"
               justify="center"
             />
-            <FormControl variant="outlined" size="small">
-            <Select onChange={this.handlePageSizeChange} value={pageSize}>
-              {this.pageSizes.map((size) => (
-                <MenuItem key={size} value={size}>
-                  {size}
-                </MenuItem>
-              ))}
-            </Select>
-            </FormControl>
+            {/* <FormControl variant="outlined" size="small">
+              <Select onChange={this.handlePageSizeChange} value={pageSize}>
+                {this.pageSizes.map((size) => (
+                  <MenuItem key={size} value={size}>
+                    {size}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl> */}
           </Grid>
         </div>
       </React.Fragment>

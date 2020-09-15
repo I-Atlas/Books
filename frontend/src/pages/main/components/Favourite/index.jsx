@@ -10,14 +10,14 @@ import { Header, Footer } from "../../../components";
 
 const useStyles = (theme) => ({});
 
-class Cart extends Component {
+class Favourite extends Component {
   render() {
     const { classes } = this.props;
     return (
       <React.Fragment>
         <Header />
         <Container component="main" maxWidth="lg">
-        <Typography variant="h1">Cart</Typography>
+        <Typography variant="h1">Favourite</Typography>
         </Container>
         <Footer />
       </React.Fragment>
@@ -25,4 +25,4 @@ class Cart extends Component {
   }
 }
 
-export default withStyles(useStyles)(Cart);
+export default withStyles(useStyles)(Favourite);

@@ -33,16 +33,23 @@ const getOneUser = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   const { id } = req.params;
-  const { username, first_name, last_name, password } = req.body;
+  const { 
+    username, 
+    first_name, 
+    last_name, 
+    password 
+  } = req.body;
 
   const userPayload = {
     username,
     first_name,
     last_name,
   };
+
   if (req.file) {
     userPayload.avatar = req.file.filename;
   }
+  
   try {
     const user = await db.User.findOne({
       where: {
