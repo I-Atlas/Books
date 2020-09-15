@@ -7,11 +7,10 @@ class UserService {
   constructor() {
     this.user = JSON.parse(localStorage.getItem('user'))
   }
-  
 
-  async update(username, first_name, last_name, password, avatar ) {
+
+  async update(username, first_name, last_name, password, avatar) {
     const formData = new FormData();
-    // debugger
     if (avatar) {
       formData.append('avatar', avatar, avatar.name)
     }
@@ -20,13 +19,15 @@ class UserService {
     formData.append('last_name', last_name)
     formData.append('password', password)
     const response = await axios
-    .patch(API_URL + `users/${this.user.id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${this.user.token}`
-      }
-    })
+      .patch(API_URL + `users/${this.user.id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${this.user.token}`
+        }
+      })
     if (response.data) {
+      debugger
+      localStorage.removeItem("user")
       localStorage.setItem("user", JSON.stringify(response.data))
       return response.data
     }
@@ -36,7 +37,9 @@ class UserService {
   }
 
   getUserContent() {
-    return axios.get(API_URL + 'users/', { headers: authHeader() })
+    return axios.get(API_URL + 'users/', {
+      headers: authHeader()
+    })
   }
 }
 

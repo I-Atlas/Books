@@ -36,7 +36,7 @@ export const useRoutes = isAuth => {
             <Route path="/recovery" exact>
                 <Recovery />
             </Route>
-            <Route path="/profile/:id" exact>
+            <Route path="/profile" exact>
                 <Profile />
             </Route>
             <Route path="/" exact>

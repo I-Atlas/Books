@@ -8,7 +8,7 @@ class AuthService {
   }
 
   async register(username, email, password) {
-      return axios
+    const response = await axios
       .post(API_URL + "register", {
         username,
         email,
@@ -17,6 +17,10 @@ class AuthService {
       .then(
         await this.timeout(1000)
       )
+    if (response.data.message) {
+      console.log(response.data.message)
+    }
+    return response.data
   }
 
   async login(email, password) {

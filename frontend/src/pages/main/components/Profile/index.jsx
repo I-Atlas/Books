@@ -14,6 +14,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import UserService from "../../../../services/user";
 import { Header, Footer } from "../../../components";
 import { BookModal } from "../../components";
+import { successToast } from "../../../components/Toast";
 
 const useStyles = (theme) => ({
   paper: {
@@ -60,7 +61,6 @@ class Profile extends Component {
       successful: false,
     };
 
-    // this.imageInput = React.createRef()
     this.user = JSON.parse(localStorage.getItem("user"));
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -110,7 +110,6 @@ class Profile extends Component {
       successful: false,
     });
 
-    debugger
     UserService.update(
       this.state.username,
       this.state.first_name,
@@ -123,13 +122,12 @@ class Profile extends Component {
           message: response.message,
           successful: true,
         });
+        successToast(response.message);
         console.log(response.message);
       })
       .catch((error) => {
         const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.message) ||
+          (error.response && error.response.data && error.response.message) ||
           error.message ||
           error.toString();
         debugger;
@@ -256,7 +254,11 @@ class Profile extends Component {
                         style={{ display: "none" }}
                       />
                     </Button>
-                    <span>{this.state.avatar ? this.state.avatar.name : 'No file selected'}</span>
+                    <span>
+                      {this.state.avatar
+                        ? this.state.avatar.name
+                        : "No file selected"}
+                    </span>
                   </Grid>
                   <Grid item xs>
                     <Button

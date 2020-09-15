@@ -6,7 +6,7 @@ const {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve('backend/uploads'));
+    cb(null, path.resolve('./uploads'));
   },
   filename: (req, file, cb) => {
     const fileName = file.originalname.toLowerCase().split(" ").join("-")

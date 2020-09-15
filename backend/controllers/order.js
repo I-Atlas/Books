@@ -90,7 +90,7 @@ const createOrder = async (req, res, next) => {
     await Promise.all(booksPromises);
 
     return res.status(201).json({
-      message: `Order №${saveOrder.id} successfully created.`
+      message: `Order №${saveOrder.id} successfully created`
     })
 
   } catch (error) {

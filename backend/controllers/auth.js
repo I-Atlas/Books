@@ -79,7 +79,7 @@ const register = async (req, res) => {
         })
 
         return res.status(201).json({
-            message: "Account successfully created!"
+            message: "Account successfully created"
         })
         
     } catch (error) {
@@ -92,19 +92,19 @@ const register = async (req, res) => {
 
 const profile = async (req, res) => {
     const {
-        email
+        id
     } = req.params;
 
     try {
         const user = await db.User.findOne({
             where: {
-                email
+                id
             }
         })
 
         if (!user) {
             return res.status(404).json({
-                message: "User not found."
+                message: "User not found"
             })
         }
 
@@ -125,7 +125,7 @@ const profile = async (req, res) => {
             orders
         });
     } catch (error) {
-        console.log('Register Error:', error);
+        console.log('Profile Error:', error);
         return res.status(500).json({
             error: error.message
         })

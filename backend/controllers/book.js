@@ -119,7 +119,7 @@ const createNewBook = async (req, res) => {
     });
 
     return res.status(201).json({
-      message: "Book successfully created!",
+      message: "Book successfully created",
     });
   } catch (error) {
     console.log("Create New Book Error:", error);
@@ -161,7 +161,7 @@ const updateBookInfo = async (req, res) => {
     );
 
     return res.status(200).json({
-      message: "Book information successfully updated!",
+      message: "Book information successfully updated",
     });
   } catch (error) {
     console.log("Update Book Information Error:", error);
@@ -182,7 +182,7 @@ const deleteBook = async (req, res) => {
     });
 
     return res.status(200).json({
-      message: "Book successfully deleted.",
+      message: "Book successfully deleted",
     });
   } catch (error) {
     console.log("Delete Book Error:", error);

@@ -31,12 +31,6 @@ module.exports = {
       price: {
         type: Sequelize.FLOAT,
         allowNull: false,
-        references: {
-            model: "Books",
-            key: "price"
-        },
-        onDelete: 'SET NULL',
-        onUpdate: 'CASCADE'
       },
       createdAt: {
         allowNull: false,

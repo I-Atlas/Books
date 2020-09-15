@@ -11,6 +11,7 @@ const {
 
 // router.get('/', [verifyToken], controller.getAllUsers)
 router.get('/', controller.getAllUsers)
+// router.get('/:id', ctrl)
 router.patch('/:id', upload.single("avatar"), controller.updateUserInfo)
 router.delete('/:id', controller.deleteUser)
 

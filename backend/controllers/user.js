@@ -69,7 +69,7 @@ const updateUserInfo = async (req, res) => {
       first_name: user.first_name,
       last_name: user.last_name,
       avatar: user.avatar,
-      message: "User information successfully updated.",
+      message: "User information successfully updated",
       // token:`Bearer ${token}`,
       createdAt: user.createdAt,
     });
@@ -92,7 +92,7 @@ const deleteUser = async (req, res) => {
     });
 
     return res.status(200).json({
-      message: "Account successfully deleted.",
+      message: "Account successfully deleted",
     });
   } catch (error) {
     console.log("Delete User Error:", error);

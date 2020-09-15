@@ -9,7 +9,7 @@ const {
 
 router.get('/all', controller.getAllBooks)
 router.get('/', controller.getBooks)
-router.post('/create', validators('book.book'), controller.createNewBook)
+router.post('/create', upload.single("image"), validators('book.book'), controller.createNewBook)
 router.put('/update', upload.single("image"), validators('book.book'), controller.updateBookInfo)
 router.delete('/delete', controller.deleteBook)
 
