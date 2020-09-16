@@ -20,6 +20,15 @@ module.exports = {
       example: {
         type: Sequelize.TEXT
       },
+      author_id: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: "Authors",
+            key: "id"
+        },
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE'
+      },
       author: {
         type: Sequelize.STRING
       },

@@ -93,6 +93,22 @@ const getAllBooks = async (req, res) => {
   }
 };
 
+const getBookPage = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const book = await db.Book.findOne({
+      id,
+    });
+
+    return res.status(201).json(book);
+  } catch (error) {
+    console.log("Get Book Page Error:", error);
+    return res.status(500).json({
+      error: error.message,
+    });
+  }
+};
+
 const createNewBook = async (req, res) => {
   const {
     name,
@@ -196,7 +212,7 @@ const deleteBook = async (req, res) => {
 };
 
 module.exports = {
-  getAllBooks,
+  getBookPage,
   getBooks,
   createNewBook,
   updateBookInfo,

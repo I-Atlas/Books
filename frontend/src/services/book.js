@@ -46,6 +46,19 @@ class BookService {
     }
   }
 
+  async getBookPage(id) {
+    const response = await axios
+      .get(API_URL + `books/${id}`, {})
+
+    if (response.data) {
+      return response.data
+    }
+
+    if (response.data.message) {
+      console.log(response.data.message)
+    }
+  }
+
   async update() {
     const response = await axios
       .get(API_URL + "all", {})

@@ -16,7 +16,7 @@ import {
   Input,
   InputAdornment,
 } from "@material-ui/core";
-import { Favorite, AddShoppingCart, Create, Search } from "@material-ui/icons";
+import { Favorite, AddShoppingCart, Create, Search, RotateRight } from "@material-ui/icons";
 import { Pagination } from "@material-ui/lab";
 import BookService from "../../../../services/book";
 
@@ -44,7 +44,7 @@ const useStyles = (theme) => ({
     flexGrow: 1,
   },
   select: {
-    margin: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
 });
 
@@ -66,6 +66,7 @@ class BookCard extends Component {
     this.handleSearchBook = this.handleSearchBook.bind(this);
     this.getBooks = this.getBooks.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleCartClick = this.handleCartClick.bind(this);
     this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
     this.pageSizes = [3, 6, 9];
   }
@@ -105,6 +106,7 @@ class BookCard extends Component {
           count: totalPages,
         });
         console.log(data);
+        console.log(this.state.res.id)
       })
       .catch((error) => {
         console.log(error);
@@ -137,6 +139,17 @@ class BookCard extends Component {
     this.setState({
       searchBook: event.target.value,
     });
+  }
+
+  handleCartClick() {
+    let order = []
+
+    if (localStorage.getItem("cart")) {
+      order = JSON.parse(localStorage.getItem("cart"))
+    }
+
+    const currentBook = order.find((item) => item.id === this.state.res.id)
+    console.log(currentBook)
   }
 
   render() {
