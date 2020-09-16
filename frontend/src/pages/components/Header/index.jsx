@@ -106,10 +106,10 @@ class Header extends Component {
               <MenuItem onClick={this.handleClose}>Profile</MenuItem>
             </Link>
           </Menu>
-          <IconButton>
+          <IconButton href="/favourite">
             <FavoriteBorderOutlined />
           </IconButton>
-          <IconButton>
+          <IconButton href="/cart">
             <ShoppingBasketOutlined />
           </IconButton>
         </Toolbar>

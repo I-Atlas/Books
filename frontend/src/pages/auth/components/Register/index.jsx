@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router";
 import {
   Avatar,
   Button,
@@ -114,26 +115,27 @@ class Register extends Component {
       this.state.email,
       this.state.password
     )
-      .then((response) => {
+      .then((data) => {
         this.setState({
-          message: response.message,
+          message: data.message,
           successful: true,
         });
-        defaultToast(response.message);
+        debugger;
+        defaultToast(data.message);
         this.props.history.push(`/login`);
-        console.log(response.message);
+        console.log(data.message);
       })
       .catch((error) => {
         const resMessage =
           (error.response &&
             error.response.data &&
-            error.response.message) ||
+            error.response.data.message) ||
           error.message ||
           error.toString();
-
-        if (error.response.message === "Email already used") {
+        debugger
+        if (error.response.data.message === "Email already used") {
           this.errorsClear();
-          return this.setState({ emailError: error.response.message });
+          return this.setState({ emailError: error.response.data.message });
         }
 
         this.setState({
@@ -231,4 +233,4 @@ class Register extends Component {
   }
 }
 
-export default withStyles(useStyles)(Register);
+export default withRouter(withStyles(useStyles)(Register));

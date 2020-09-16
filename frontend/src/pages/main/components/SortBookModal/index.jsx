@@ -48,11 +48,11 @@ class SortBookModal extends Component {
       comedy: false,
       adventure: false,
       romance: false,
-    //   contemporary: false,
-    //   dystopian: false,
-    //   mystery: false,
-    //   horror: false,
-    //   thriller: false,
+      //   contemporary: false,
+      //   dystopian: false,
+      //   mystery: false,
+      //   horror: false,
+      //   thriller: false,
       category: "",
       res: [],
       open: false,
@@ -92,11 +92,11 @@ class SortBookModal extends Component {
       [event.target.name]: event.target.value,
     });
   }
-  
+
   handleCheck(event) {
     // this.errorsClear();
     this.setState({
-    //   [event.target.checked]: true,
+      //   [event.target.checked]: true,
       [event.target.name]: event.target.checked,
     });
   }
@@ -155,7 +155,7 @@ class SortBookModal extends Component {
                       <FormControlLabel
                         control={
                           <Checkbox
-                          checked={this.state.comedy}
+                            checked={this.state.comedy}
                             onChange={this.handleCheck}
                             name="comedy"
                           />

@@ -1,7 +1,7 @@
 import React from "react"
 import { Switch, Route, Redirect } from "react-router-dom"
 import { Login, Register, Recovery } from "../pages/auth/components"
-import { Home, Profile } from "../pages/main/components"
+import { Home, Profile, Cart, Favourite } from "../pages/main/components"
 
 export const useRoutes = isAuth => {
     // if (isAuth) {
@@ -38,6 +38,12 @@ export const useRoutes = isAuth => {
             </Route>
             <Route path="/profile" exact>
                 <Profile />
+            </Route>
+            <Route path="/cart" exact>
+                <Cart />
+            </Route>
+            <Route path="/favourite" exact>
+                <Favourite />
             </Route>
             <Route path="/" exact>
                 <Home />

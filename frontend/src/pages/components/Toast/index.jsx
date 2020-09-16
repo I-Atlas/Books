@@ -26,7 +26,7 @@ export const errorToast = (message) => {
   });
 };
 
-export const defaultToast = (setMessage, message) => {
+export const defaultToast = (message) => {
   toast(message, {
     position: "top-center",
     autoClose: 1500,
@@ -36,7 +36,6 @@ export const defaultToast = (setMessage, message) => {
     draggable: true,
     progress: undefined,
   });
-  setMessage("");
 };
 
 class ToastWrapper extends Component {

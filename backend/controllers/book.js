@@ -66,7 +66,6 @@ async function getBooks(req, res, next) {
     const data = await db.Book.findAndCountAll(dbQuery);
     const response = getPagingData(data, page, limit);
     return res.send(response);
-    
 
     // const books = await db.Book.findAndCountAll(dbQuery);
 
@@ -101,22 +100,26 @@ const createNewBook = async (req, res) => {
     price,
     example,
     author,
-    image,
     rating,
     category,
   } = req.body;
 
+  const bookPayload = {
+    name,
+    description,
+    price,
+    example,
+    author,
+    rating,
+    category,
+  };
+
+  if (req.file) {
+    bookPayload.image = req.file.filename;
+  }
+
   try {
-    await db.Book.create({
-      name,
-      description,
-      price,
-      example,
-      author,
-      image,
-      rating,
-      category,
-    });
+    await db.Book.create(bookPayload);
 
     return res.status(201).json({
       message: "Book successfully created",
