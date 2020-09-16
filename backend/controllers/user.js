@@ -33,12 +33,7 @@ const getOneUser = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   const { id } = req.params;
-  const { 
-    username, 
-    first_name, 
-    last_name, 
-    password 
-  } = req.body;
+  const { username, first_name, last_name, password } = req.body;
 
   const userPayload = {
     username,
@@ -49,7 +44,7 @@ const updateUserInfo = async (req, res) => {
   if (req.file) {
     userPayload.avatar = req.file.filename;
   }
-  
+
   try {
     const user = await db.User.findOne({
       where: {
@@ -69,6 +64,10 @@ const updateUserInfo = async (req, res) => {
       },
     });
 
+    // return res.status(200).json({
+    //   message: "User information successfully updated",
+    // });
+
     return res.status(200).json({
       id: user.id,
       username: user.username,
@@ -77,7 +76,6 @@ const updateUserInfo = async (req, res) => {
       last_name: user.last_name,
       avatar: user.avatar,
       message: "User information successfully updated",
-      // token:`Bearer ${token}`,
       createdAt: user.createdAt,
     });
   } catch (error) {

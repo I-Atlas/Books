@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router } from "react-router-dom"
-import { useRoutes } from './routes'
-import AuthService from "./services/auth"
-import { ToastWrapper } from "./pages/components"
+import React, { Component } from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import { useRoutes } from "./routes";
+import AuthService from "./services/auth";
+import { ToastWrapper } from "./pages/components";
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class App extends Component {
     this.state = {
       showModeratorBoard: false,
       showAdminBoard: false,
-      currentUser: undefined
+      currentUser: undefined,
     };
   }
 
@@ -31,17 +31,17 @@ class App extends Component {
   }
 
   render() {
-  const routes = useRoutes(false)
-  return (
-    <Router>
-      <div className="App">
-      <ToastWrapper />
-        {routes}
-        {/* <Auth /> */}
-      </div>
-    </Router>
-    )
-  } 
+    const routes = useRoutes(false);
+    return (
+      <Router>
+        <div className="App">
+          <ToastWrapper />
+          {routes}
+          {/* <Auth /> */}
+        </div>
+      </Router>
+    );
+  }
 }
 
-export default App
+export default App;
