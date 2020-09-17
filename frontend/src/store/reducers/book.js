@@ -23,21 +23,12 @@ export const bookReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ONE_BOOK:
       return {
-        id: 0,
-        name: "",
-        description: "",
-        price: "",
-        example: "",
-        author_id: null,
-        author: "",
-        image: null,
-        rating: null,
-        category: "",
+        ...state,
         loading: true,
-        error: "",
       };
     case GET_ONE_BOOK_SUCCESS:
       return {
+        ...state,
         id: action.data.book.id,
         name: action.data.book.name,
         description: action.data.book.description,
@@ -47,24 +38,14 @@ export const bookReducer = (state = initialState, action) => {
         author: action.data.book.author,
         image: action.data.book.image,
         rating: action.data.book.rating,
-        category: "",
+        category: action.data.book.category,
         loading: false,
-        error: "",
       };
     case GET_ONE_BOOK_ERROR:
       return {
-        id: 0,
-        name: "",
-        description: "",
-        price: "",
-        example: "",
-        author_id: null,
-        author: "",
-        image: null,
-        rating: null,
-        category: "",
+        ...state,
         loading: false,
-        error: action.data.message,
+        error: action.data.error,
       };
     default:
       return state;

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router";
+import { connect } from "react-redux";
 import {
   Avatar,
   Button,
@@ -14,6 +15,7 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { Header, Footer } from "../../../components";
 import AuthService from "../../../../services/auth";
+import { registerUser } from "../../../../store/actionCreators/register";
 import { defaultToast } from "../../../components/Toast";
 
 const useStyles = (theme) => ({
@@ -110,20 +112,20 @@ class Register extends Component {
       successful: false,
     });
 
-    AuthService.register(
+    this.props.registerUser(
       this.state.username,
       this.state.email,
       this.state.password
     )
-      .then((data) => {
+      .then(() => {
         this.setState({
-          message: data.message,
+          message: this.props.message,
           successful: true,
         });
         debugger;
-        defaultToast(data.message);
+        defaultToast(this.state.message);
         this.props.history.push(`/login`);
-        console.log(data.message);
+        console.log(this.state.message);
       })
       .catch((error) => {
         const resMessage =
@@ -233,4 +235,11 @@ class Register extends Component {
   }
 }
 
-export default withRouter(withStyles(useStyles)(Register));
+const mapDispatchToProps = {
+  registerUser: registerUser,
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withRouter(withStyles(useStyles)(Register)));
