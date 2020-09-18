@@ -40,7 +40,6 @@ const register = async (req, res) => {
       message: "Account successfully created",
       refreshToken,
       token,
-      email,
     });
   } catch (error) {
     console.log("Register Error:", error);

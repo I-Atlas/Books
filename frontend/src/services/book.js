@@ -38,6 +38,7 @@ class BookService {
       })
 
     if (response.data) {
+      console.log(response.data.books)
       return response.data
     }
 

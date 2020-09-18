@@ -49,6 +49,9 @@ export const useRoutes = isAuth => {
                 <Home />
             </Route>
             {/* <Redirect to="/" /> */}
+            <Route path="/books/:id" exact>
+                <Cart />
+            </Route>
         </Switch> 
     )
 }

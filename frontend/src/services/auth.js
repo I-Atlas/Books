@@ -18,7 +18,6 @@ class AuthService {
         await this.timeout(1000)
       )
     if (response.data.message) {
-      debugger;
       console.log(response.data.message)
     }
     return response.data

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   CardMedia,
   CardContent,
@@ -15,10 +16,13 @@ import {
   InputLabel,
   Input,
   InputAdornment,
+  Paper,
+  Link
 } from "@material-ui/core";
-import { Favorite, AddShoppingCart, Create, Search, RotateRight } from "@material-ui/icons";
+import { Favorite, AddShoppingCart, Create, Search } from "@material-ui/icons";
 import { Pagination } from "@material-ui/lab";
 import BookService from "../../../../services/book";
+import { getBooks } from "../../../../store/actionCreators/books";
 
 const useStyles = (theme) => ({
   container: {
@@ -45,6 +49,10 @@ const useStyles = (theme) => ({
   },
   select: {
     marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
+    textAlign: "center",
   },
 });
 
@@ -53,20 +61,21 @@ class BookCard extends Component {
     super(props);
 
     this.state = {
-      res: [],
-      page: 1,
-      pageSize: 9,
-      count: 0,
+      books: [],
+      totalBooks: 0,
+      totalPages: 0,
+      currentPage: 1,
+      currentPageSize: 9,
       searchBook: "",
-      order_type: "ASC",
-      order_item: "name",
+      orderType: "ASC",
+      orderItem: "name",
       successful: false,
     };
 
     this.handleSearchBook = this.handleSearchBook.bind(this);
     this.getBooks = this.getBooks.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
-    this.handleCartClick = this.handleCartClick.bind(this);
+    // this.handleCartClick = this.handleCartClick.bind(this);
     this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
     this.pageSizes = [3, 6, 9];
   }
@@ -75,47 +84,50 @@ class BookCard extends Component {
     this.getBooks();
   }
 
-  getRequestParams(searchBook, page, pageSize) {
+  getRequestParams(searchBook, currentPage, currentPageSize) {
     let params = {};
 
     if (searchBook) {
       params["name"] = searchBook;
     }
 
-    if (page) {
-      params["page"] = page - 1;
+    if (currentPage) {
+      params["page"] = currentPage - 1;
     }
 
-    if (pageSize) {
-      params["size"] = pageSize;
+    if (currentPageSize) {
+      params["size"] = currentPageSize;
     }
 
     return params;
   }
 
   getBooks() {
-    const { searchBook, page, pageSize } = this.state;
-    const params = this.getRequestParams(searchBook, page, pageSize);
+    const { searchBook, currentPage, currentPageSize } = this.state;
+    const params = this.getRequestParams(
+      searchBook,
+      currentPage,
+      currentPageSize
+    );
 
-    BookService.getAllBooks(params)
-      .then((data) => {
-        const { books, totalPages } = data;
-
+    this.props
+      .getBooks(params)
+      .then(() => {
         this.setState({
-          res: books,
-          count: totalPages,
+          books: this.props.books.books,
+          totalBooks: this.props.books.totalBooks,
+          totalPages: this.props.books.totalPages,
         });
-        console.log(data);
-        console.log(this.state.res.id)
       })
       .catch((error) => {
         console.log(error);
       });
   }
+  
   handlePageChange(event, value) {
     this.setState(
       {
-        page: value,
+        currentPage: value,
       },
       () => {
         this.getBooks();
@@ -126,8 +138,8 @@ class BookCard extends Component {
   handlePageSizeChange(event) {
     this.setState(
       {
-        pageSize: event.target.value,
-        page: 1,
+        currentPageSize: event.target.value,
+        currentPage: 1,
       },
       () => {
         this.getBooks();
@@ -141,19 +153,26 @@ class BookCard extends Component {
     });
   }
 
-  handleCartClick() {
-    let order = []
+  // handleCartClick() {
+  //   let order = [];
 
-    if (localStorage.getItem("cart")) {
-      order = JSON.parse(localStorage.getItem("cart"))
-    }
+  //   if (localStorage.getItem("cart")) {
+  //     order = JSON.parse(localStorage.getItem("cart"));
+  //   }
 
-    const currentBook = order.find((item) => item.id === this.state.res.id)
-    console.log(currentBook)
-  }
+  //   const currentBook = order.find((item) => item.id === this.state.books.id);
+  //   console.log(currentBook);
+  // }
 
   render() {
-    const { searchBook, res, page, count, pageSize } = this.state;
+    const {
+      books,
+      totalBooks,
+      totalPages,
+      currentPage,
+      currentPageSize,
+      searchBook,
+    } = this.state;
     const { classes } = this.props;
     return (
       <React.Fragment>
@@ -188,21 +207,22 @@ class BookCard extends Component {
           justify="flex-start"
           alignItems="flex-start"
         >
-          {res &&
-            res.map((book, id) => (
+          {books &&
+            books.map((book, id) => (
               <Grid item key={id} xs={12} sm={6} md={4}>
+                <Link href={`books/${book.id}`}>
                 <Card className={classes.card}>
                   <CardHeader title={book.name} subheader={book.author} />
                   {book.image ? (
                     <CardMedia
-                      className={classes.cardMedia}
-                      image={`http://localhost:5000/images/${book.image}`}
+                    className={classes.cardMedia}
+                    image={`http://localhost:5000/images/${book.image}`}
                     />
-                  ) : (
-                    <CardMedia
+                    ) : (
+                      <CardMedia
                       className={classes.cardMedia}
                       image="https://source.unsplash.com/random"
-                    />
+                      />
                   )}
                   <CardContent className={classes.cardContent}>
                     <Typography variant="h5">{`${book.price} ₽`}</Typography>
@@ -219,6 +239,7 @@ class BookCard extends Component {
                     </IconButton>
                   </CardActions>
                 </Card>
+                      </Link>
               </Grid>
             ))}
         </Grid>
@@ -229,7 +250,10 @@ class BookCard extends Component {
               size="small"
               className={classes.select}
             >
-              <Select onChange={this.handlePageSizeChange} value={pageSize}>
+              <Select
+                onChange={this.handlePageSizeChange}
+                value={currentPageSize}
+              >
                 {this.pageSizes.map((size) => (
                   <MenuItem key={size} value={size}>
                     {size}
@@ -241,14 +265,20 @@ class BookCard extends Component {
               color="primary"
               variant="outlined"
               shape="rounded"
-              count={count}
-              page={page}
+              count={totalPages}
+              page={currentPage}
               siblingCount={1}
               boundaryCount={1}
               onChange={this.handlePageChange}
               size="large"
               justify="center"
             />
+            <Paper variant="outlined" className={classes.select}>
+              <Typography variant="h6" display="block">
+                {totalBooks} items
+              </Typography>
+            </Paper>
+
             {/* <FormControl variant="outlined" size="small">
               <Select onChange={this.handlePageSizeChange} value={pageSize}>
                 {this.pageSizes.map((size) => (
@@ -265,4 +295,15 @@ class BookCard extends Component {
   }
 }
 
-export default withStyles(useStyles)(BookCard);
+const mapStateToProps = (store) => ({
+  books: store.books,
+});
+
+const mapDispatchToProps = {
+  getBooks,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(useStyles)(BookCard));

@@ -23,17 +23,17 @@ export const booksReducer = (state = initialState, action) => {
     case GET_ALL_BOOKS_SUCCESS:
       return {
         ...state,
-        books: action.data.books.books,
-        currentPage: action.data.books.count,
-        totalBooks: action.data.books.totalBooks,
-        totalPages: action.data.books.totalPages,
+        books: action.payload.books,
+        currentPage: action.payload.currentPage,
+        totalBooks: action.payload.totalBooks,
+        totalPages: action.payload.totalPages,
         loading: false,
       };
     case GET_ALL_BOOKS_ERROR:
       return {
         ...state,
         loading: false,
-        error: action.data.message,
+        error: action.payload.error,
       };
     default:
       return state;

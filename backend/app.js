@@ -16,7 +16,7 @@ app.use(
         extended: true,
     })
 );
-app.use("/images", express.static("backend/uploads"));
+app.use("/images", express.static("uploads"));
 app.use("/", require("./routes/auth"));
 app.use("/books", require("./routes/book"));
 app.use("/users", require("./routes/user"));
