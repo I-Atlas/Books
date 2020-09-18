@@ -1,18 +1,16 @@
 const multer = require("multer");
-const path = require('path');
-const {
-  v4: uuidv4
-} = require("uuid");
+const path = require("path");
+const { v4: uuidv4 } = require("uuid");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve('uploads'));
+    cb(null, path.resolve("uploads"));
   },
   filename: (req, file, cb) => {
-    const fileName = file.originalname.toLowerCase().split(" ").join("-")
-    cb(null, `${uuidv4()}-${fileName}`)
+    const fileName = file.originalname.toLowerCase().split(" ").join("-");
+    cb(null, `${uuidv4()}-${fileName}`);
   },
-})
+});
 
 const upload = multer({
   storage: storage,
@@ -23,19 +21,18 @@ const upload = multer({
       file.mimetype == "image/jpeg" ||
       file.mimetype == "image/gif"
     ) {
-      cb(null, true)
+      cb(null, true);
     } else {
       // cb(null, false)
-      cb(new Error("Available image format: .png, .jpg, .jpeg and .gif"))
-
+      cb(new Error("Available image format: .png, .jpg, .jpeg and .gif"));
 
       // return cb(res.status(401).json({
-      //     message: 
+      //     message:
       // }))
     }
-  }
-})
+  },
+});
 
 module.exports = {
-  upload
-}
+  upload,
+};

@@ -3,7 +3,7 @@ import axios from "axios"
 const API_URL = "http://localhost:5000/books/"
 
 class BookService {
-  async create(name, description, price, example, author, category, rating, image) {
+  async create(name, description, price, example, author, author_id, category, rating, image) {
     const formData = new FormData();
     debugger
     if (image) {
@@ -14,6 +14,7 @@ class BookService {
     formData.append('price', price)
     formData.append('example', example)
     formData.append('author', author)
+    formData.append('author_id', author_id)
     formData.append('category', category)
     formData.append('rating', rating)
 

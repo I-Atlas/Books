@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   Button,
   Grid,
@@ -9,11 +10,16 @@ import {
   DialogTitle,
   withStyles,
   Fab,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
-import { Rating } from "@material-ui/lab";
+import { Rating, Autocomplete } from "@material-ui/lab";
 import AddIcon from "@material-ui/icons/Add";
 import BookService from "../../../../services/book";
 import { successToast } from "../../../components/Toast";
+import { getAuthors } from "../../../../store/actionCreators/authors";
+import { getCategories } from "../../../../store/actionCreators/categories";
 
 const useStyles = (theme) => ({
   title: {
@@ -45,11 +51,13 @@ class BookModal extends Component {
       price: "",
       priceError: "",
       example: "",
+      authors: [],
       author: "",
+      author_id: null,
       rating: 0,
       ratingError: "",
+      categories: [],
       category: "",
-      categoryError: "",
       image: null,
       message: "",
       successful: false,
@@ -61,6 +69,14 @@ class BookModal extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleGetAuthors = this.handleGetAuthors.bind(this);
+    this.handleGetCategories = this.handleGetCategories.bind(this);
+    this.handleAuthorChange = this.handleAuthorChange.bind(this);
+  }
+
+  componentDidMount() {
+    this.handleGetAuthors();
+    this.handleGetCategories();
   }
 
   errorsClear() {
@@ -69,8 +85,6 @@ class BookModal extends Component {
       priceError: "",
     });
   }
-
-  formValidation() {}
 
   handleInputChange(event) {
     this.setState({
@@ -97,6 +111,46 @@ class BookModal extends Component {
     });
   }
 
+  handleAuthorChange(event, val) {
+    debugger
+    this.errorsClear();
+    // const author_id = this.state.authors.find(author => author.id === `${event.target.value}`)
+    this.setState({
+      author_id: val.id,
+    });
+    // console.log(author_id);
+    
+  }
+
+  handleGetAuthors(event) {
+    this.props
+      .getAuthors()
+      .then(() => {
+        const mappedAuthors = this.props.authors.authors.map(author => author.id)
+        this.setState({
+          authors: this.props.authors.authors,
+        });
+        console.log(this.state.authors);
+        console.log(mappedAuthors);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  handleGetCategories(event) {
+    this.props
+      .getCategories()
+      .then(() => {
+        this.setState({
+          categories: this.props.categories.categories,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
 
@@ -111,6 +165,7 @@ class BookModal extends Component {
       this.state.price,
       this.state.example,
       this.state.author,
+      this.state.author_id,
       this.state.category,
       this.state.rating,
       this.state.image
@@ -147,6 +202,7 @@ class BookModal extends Component {
   }
 
   render() {
+    const { authors, author, categories, category } = this.state;
     const { classes } = this.props;
     return (
       <React.Fragment>
@@ -159,7 +215,7 @@ class BookModal extends Component {
           <AddIcon />
         </Fab>
         <Dialog open={this.state.open} onClose={this.handleClose}>
-          <DialogTitle id="responsive-dialog-title" className={classes.title}>
+          <DialogTitle id="create-book-modal" className={classes.title}>
             {"Create new book"}
           </DialogTitle>
           <DialogContent>
@@ -216,27 +272,40 @@ class BookModal extends Component {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    name="author"
-                    variant="outlined"
-                    fullWidth
-                    label="Author"
-                    id="author"
-                    value={`${this.state.author}`}
-                    onChange={this.handleChange}
+                  <Autocomplete
+                    options={authors}
+                    getOptionLabel={(option) => option.name}
+                    onChange={this.handleAuthorChange}
+                    renderInput={(params) => (
+                      <TextField
+                      {...params}
+                        id="author"
+                        name="author"
+                        label="Author"
+                        variant="outlined"
+                        fullWidth
+                        value={`${author}`}
+                        
+                      />
+                    )}
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    name="category"
-                    variant="outlined"
-                    fullWidth
-                    label="Category"
-                    id="category"
-                    // error={Boolean(this.state.categoryError)}
-                    // helperText={this.state.categoryError}
-                    value={`${this.state.category}`}
-                    onChange={this.handleChange}
+                  <Autocomplete
+                    options={categories}
+                    getOptionLabel={(option) => option.name}
+                    renderInput={(params) => (
+                      <TextField
+                      {...params}
+                        id="category"
+                        name="category"
+                        label="Category"
+                        variant="outlined"
+                        fullWidth
+                        value={`${category}`}
+                        onChange={this.handleChange}
+                    />
+                    )}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -297,4 +366,17 @@ class BookModal extends Component {
   }
 }
 
-export default withStyles(useStyles)(BookModal);
+const mapStateToProps = (store) => ({
+  authors: store.authors,
+  categories: store.categories,
+});
+
+const mapDispatchToProps = {
+  getAuthors,
+  getCategories,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(useStyles)(BookModal));

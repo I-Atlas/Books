@@ -1,10 +1,9 @@
 const { check } = require("express-validator");
 
 module.exports = {
-  book: [
+  author: [
     check("name", "Name is missing").exists().isLength({
       min: 1,
     }),
-    check("price", "Price must contain numbers").optional().isNumeric(),
   ],
 };

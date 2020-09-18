@@ -17,9 +17,24 @@ import {
   Input,
   InputAdornment,
   Paper,
-  Link
+  List,
+  ListItem,
+  ListItemText,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  Divider,
 } from "@material-ui/core";
-import { Favorite, AddShoppingCart, Create, Search } from "@material-ui/icons";
+import {
+  Favorite,
+  AddShoppingCart,
+  Create,
+  Search,
+  Close,
+  AllOutOutlined,
+} from "@material-ui/icons";
 import { Pagination } from "@material-ui/lab";
 import BookService from "../../../../services/book";
 import { getBooks } from "../../../../store/actionCreators/books";
@@ -28,6 +43,22 @@ const useStyles = (theme) => ({
   container: {
     paddingTop: theme.spacing(7),
     paddingBottom: theme.spacing(8),
+  },
+  paper: {
+    padding: theme.spacing(4),
+    color: theme.palette.text.secondary,
+    margin: theme.spacing(4),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  image: {
+    height: "100%",
+    width: "100%",
+  },
+  title: {
+    color: theme.palette.text.secondary,
+    textAlign: "center",
   },
   card: {
     height: "100%",
@@ -70,11 +101,14 @@ class BookCard extends Component {
       orderType: "ASC",
       orderItem: "name",
       successful: false,
+      open: false,
     };
 
     this.handleSearchBook = this.handleSearchBook.bind(this);
     this.getBooks = this.getBooks.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.handleClose = this.handleClose.bind(this);
     // this.handleCartClick = this.handleCartClick.bind(this);
     this.handlePageSizeChange = this.handlePageSizeChange.bind(this);
     this.pageSizes = [3, 6, 9];
@@ -82,6 +116,18 @@ class BookCard extends Component {
 
   componentDidMount() {
     this.getBooks();
+  }
+
+  handleClick() {
+    this.setState({
+      open: true,
+    });
+  }
+
+  handleClose() {
+    this.setState({
+      open: false,
+    });
   }
 
   getRequestParams(searchBook, currentPage, currentPageSize) {
@@ -123,7 +169,7 @@ class BookCard extends Component {
         console.log(error);
       });
   }
-  
+
   handlePageChange(event, value) {
     this.setState(
       {
@@ -152,17 +198,6 @@ class BookCard extends Component {
       searchBook: event.target.value,
     });
   }
-
-  // handleCartClick() {
-  //   let order = [];
-
-  //   if (localStorage.getItem("cart")) {
-  //     order = JSON.parse(localStorage.getItem("cart"));
-  //   }
-
-  //   const currentBook = order.find((item) => item.id === this.state.books.id);
-  //   console.log(currentBook);
-  // }
 
   render() {
     const {
@@ -210,19 +245,18 @@ class BookCard extends Component {
           {books &&
             books.map((book, id) => (
               <Grid item key={id} xs={12} sm={6} md={4}>
-                <Link href={`books/${book.id}`}>
                 <Card className={classes.card}>
                   <CardHeader title={book.name} subheader={book.author} />
                   {book.image ? (
                     <CardMedia
-                    className={classes.cardMedia}
-                    image={`http://localhost:5000/images/${book.image}`}
+                      className={classes.cardMedia}
+                      image={`http://localhost:5000/images/${book.image}`}
                     />
-                    ) : (
-                      <CardMedia
+                  ) : (
+                    <CardMedia
                       className={classes.cardMedia}
                       image="https://source.unsplash.com/random"
-                      />
+                    />
                   )}
                   <CardContent className={classes.cardContent}>
                     <Typography variant="h5">{`${book.price} ₽`}</Typography>
@@ -234,12 +268,79 @@ class BookCard extends Component {
                     <IconButton aria-label="add to cart">
                       <AddShoppingCart />
                     </IconButton>
-                    <IconButton aria-label="update">
-                      <Create />
+                    <IconButton aria-label="expand" onClick={this.handleClick}>
+                      <AllOutOutlined />
                     </IconButton>
+                    <Dialog
+                      fullScreen
+                      open={this.state.open}
+                      onClose={this.handleClose}
+                    >
+                      <IconButton
+                        edge="start"
+                        color="inherit"
+                        onClick={this.handleClose}
+                        aria-label="close"
+                      >
+                        <Close />
+                      </IconButton>
+                      <DialogTitle
+                        variant="h1"
+                        id="expand-book-card"
+                        className={classes.title}
+                      >
+                        {book.name} | {book.author}
+                      </DialogTitle>
+                      <DialogContent>
+                        <Grid container spacing={3}>
+                          <Grid item xs={12} sm={6}>
+                            <Paper className={classes.paper}>
+                              <img
+                                src={
+                                  book.image
+                                    ? `http://localhost:5000/images/${book.image}`
+                                    : `https://source.unsplash.com/random`
+                                }
+                                alt={book.name}
+                                className={classes.image}
+                              />
+                            </Paper>
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                          <Paper className={classes.paper}>
+                              <Typography variant="h3">{`${book.price} ₽`}</Typography>
+                              <Button autoFocus color="primary">
+                                Add to cart
+                              </Button>
+                            <List>
+                              <ListItem>
+                                <ListItemText
+                                  primary="About"
+                                  secondary={book.description}
+                                />
+                              </ListItem>
+                              <Divider variant="middle" />
+                              <ListItem>
+                                <ListItemText
+                                  primary="Text example"
+                                  secondary={book.example}
+                                />
+                              </ListItem>
+                              <Divider variant="middle" />
+                              <ListItem>
+                                <ListItemText
+                                  primary="Rating"
+                                  secondary={book.rating}
+                                />
+                              </ListItem>
+                            </List>
+                            </Paper>
+                          </Grid>
+                        </Grid>
+                      </DialogContent>
+                    </Dialog>
                   </CardActions>
                 </Card>
-                      </Link>
               </Grid>
             ))}
         </Grid>
@@ -278,16 +379,6 @@ class BookCard extends Component {
                 {totalBooks} items
               </Typography>
             </Paper>
-
-            {/* <FormControl variant="outlined" size="small">
-              <Select onChange={this.handlePageSizeChange} value={pageSize}>
-                {this.pageSizes.map((size) => (
-                  <MenuItem key={size} value={size}>
-                    {size}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
           </Grid>
         </div>
       </React.Fragment>

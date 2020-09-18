@@ -1,16 +1,24 @@
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const validators = require('../validators')
-const controller = require('../controllers/book')
-const {
-    upload
-} = require("../middleware/multer");
+const validators = require("../validators");
+const controller = require("../controllers/book");
+const { upload } = require("../middleware/multer");
 
-router.get('/book/:id', controller.getBookPage)
-router.get('/', controller.getBooks)
-router.post('/create', upload.single("image"), validators('book.book'), controller.createNewBook)
-router.put('/update', upload.single("image"), validators('book.book'), controller.updateBookInfo)
-router.delete('/delete', controller.deleteBook)
+router.get("/book/:id", controller.getBookPage);
+router.get("/", controller.getBooks);
+router.post(
+  "/create",
+  upload.single("image"),
+  validators("book.book"),
+  controller.createNewBook
+);
+router.put(
+  "/update",
+  upload.single("image"),
+  validators("book.book"),
+  controller.updateBookInfo
+);
+router.delete("/delete", controller.deleteBook);
 
-module.exports = router
+module.exports = router;

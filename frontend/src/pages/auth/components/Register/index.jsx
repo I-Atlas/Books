@@ -17,6 +17,7 @@ import { Header, Footer } from "../../../components";
 import AuthService from "../../../../services/auth";
 import { registerUser } from "../../../../store/actionCreators/register";
 import { defaultToast } from "../../../components/Toast";
+import { compose } from "redux";
 
 const useStyles = (theme) => ({
   paper: {
@@ -123,9 +124,9 @@ class Register extends Component {
           successful: true,
         });
         debugger;
-        defaultToast(this.state.message);
+        defaultToast(this.props.message);
         this.props.history.push(`/login`);
-        console.log(this.state.message);
+        console.log(this.props.message);
       })
       .catch((error) => {
         const resMessage =
@@ -243,3 +244,8 @@ export default connect(
   null,
   mapDispatchToProps
 )(withRouter(withStyles(useStyles)(Register)));
+
+// compose(
+//   withRouter,
+//   withStyles(useStyles),
+// )(Register)
