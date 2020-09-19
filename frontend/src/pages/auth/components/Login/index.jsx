@@ -54,24 +54,7 @@ class Login extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-  }
-
-  handleClick() {
-    this.setState({
-      setOpen: true,
-    });
-  }
-
-  handleClose(event, reason) {
-    if (reason === "clickaway") {
-      return;
-    }
-    this.setState({
-      setOpen: false,
-    });
+    // this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   errorsClear() {

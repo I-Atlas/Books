@@ -1,25 +1,23 @@
 const jwt = require("jsonwebtoken");
-const db = require('../models')
-const {
-  createToken
-} = require("../utils/token");
+const db = require("../models");
+const { createToken } = require("../utils/token");
 
-require('dotenv').config()
-const secret = process.env.JWT_SECRET
+require("dotenv").config();
+const secret = process.env.JWT_SECRET;
 
 const verifyToken = (req, res, next) => {
   const token = req.headers["Authorization"];
 
   if (!token) {
     return res.status(403).send({
-      message: "No token provided!"
+      message: "No token provided!",
     });
   }
 
   jwt.verify(token, secret, (error, decoded) => {
     if (error) {
       return res.status(401).send({
-        message: `Unauthorized! ${error}`
+        message: `Unauthorized! ${error}`,
       });
     }
     req.userId = decoded.id;
@@ -48,7 +46,7 @@ const refreshToken = async (req, res, next) => {
 
     const user = await db.User.findOne({
       where: {
-        refresh_token
+        refresh_token,
       },
     });
 
@@ -72,5 +70,5 @@ const refreshToken = async (req, res, next) => {
 module.exports = {
   verifyToken,
   isAuth,
-  refreshToken
+  refreshToken,
 };

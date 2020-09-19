@@ -5,6 +5,7 @@ import {
   POST_REGISTER_ERROR,
   POST_REGISTER_SUCCESS,
 } from "../actions";
+import { register } from "../../serviceWorker";
 
 const API_URL = "http://localhost:5000/register";
 
