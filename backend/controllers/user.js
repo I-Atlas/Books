@@ -64,10 +64,6 @@ const updateUserInfo = async (req, res) => {
       },
     });
 
-    // return res.status(200).json({
-    //   message: "User information successfully updated",
-    // });
-
     return res.status(200).json({
       id: user.id,
       username: user.username,
@@ -87,7 +83,7 @@ const updateUserInfo = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const { id } = req.params; // body protect
+  const { id } = req.params;
 
   try {
     await db.User.destroy({

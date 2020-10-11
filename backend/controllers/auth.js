@@ -1,9 +1,7 @@
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const db = require("../models");
 
 require("dotenv").config();
-const secret = process.env.JWT_SECRET || "helloworldiliya";
 const { createToken } = require("../utils/token");
 
 const register = async (req, res) => {
@@ -11,25 +9,25 @@ const register = async (req, res) => {
     const { username, email, password } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 12);
-    
+
     const candidate = await db.User.findOne({
         where: {
             email,
         },
     });
-    
+
     if (candidate) {
         return res.status(400).json({
             message: "Email already used",
         });
     }
-    
+
     const user = await db.User.create({
         username,
         email,
         password: hashedPassword,
     });
-    
+
     const token = createToken(user, 60 * 15);
     const refreshToken = createToken(user, 60 * 60 * 72);
 
@@ -66,20 +64,6 @@ const login = async (req, res) => {
 
       user.refresh_token = refreshToken;
       await user.save();
-      //   const token = jwt.sign(
-      //     {
-      //       userId: user.id,
-      //     },
-      //     secret,
-      //     {
-      //       expiresIn: "1h",
-      //     }
-      //   );
-
-      // return res.status(200).json({
-      //     token,
-      //     refreshToken,
-      //   });
 
       return res.status(200).json({
         id: user.id,
@@ -124,12 +108,6 @@ const profile = async (req, res) => {
           model: db.User,
         },
       ],
-      //   {
-      //     model: db.Book,
-      //     as: "Books",
-      //     attributes: ["id", "name", "price"]
-      //   }
-      // ]
     });
 
     return res.status(200).json({

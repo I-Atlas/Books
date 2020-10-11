@@ -5,8 +5,8 @@ let localConfig
 let config = {
   development: {
     db: {
-      username: 'fusion',
-      password: 'fusion',
+      username: 'postgres',
+      password: 'postgres',
       database: 'books',
       host: '127.0.0.1',
       dialect: 'postgres',
@@ -18,7 +18,7 @@ let config = {
       refreshTokenExpiresInSec: 604800,
       accessTokenExpiresIn: '2days',
       refreshTokenExpiresIn: '7days',
-      url: 'http://localhost:6800',
+      url: 'http://localhost:5000',
       hashType: 'md5',
       hashKey: 'fusion',
       port: '6800',
@@ -27,7 +27,7 @@ let config = {
       quantityPicture: 5
     },
     mail: {
-      email: 'iliya@gmail.com',
+      email: 'bolotov.iliya.w@gmail.com',
       password: '',
       service: 'gmail'
     }

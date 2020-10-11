@@ -1,8 +1,8 @@
 {
   "development": {
     "db": {
-      "username": "fusion",
-      "password": "fusion",
+      "username": "postgres",
+      "password": "postgres",
       "database": "book_store",
       "host": "127.0.0.1",
       "dialect": "postgres",
@@ -14,7 +14,7 @@
       "refreshTokenExpiresInSec": 604800,
       "accessTokenExpiresIn": "2days",
       "refreshTokenExpiresIn": "7days",
-      "url": "http://localhost:6800",
+      "url": "http://localhost:5000",
       "hashType": "md5",
       "hashKey": "hashkey"
     },
