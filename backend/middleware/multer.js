@@ -23,12 +23,7 @@ const upload = multer({
     ) {
       cb(null, true);
     } else {
-      // cb(null, false)
       cb(new Error("Available image format: .png, .jpg, .jpeg and .gif"));
-
-      // return cb(res.status(401).json({
-      //     message:
-      // }))
     }
   },
 });

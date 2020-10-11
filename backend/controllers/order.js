@@ -27,13 +27,6 @@ const createOrder = async (req, res, next) => {
       user_id: userId,
     });
 
-    // const checkBooks = books.map(async (item) => {
-    // })
-
-    // const checkBookResult = await Promise.all(checkBooks);
-
-    // const resultChecking = checkBookResult.filter((item) => !item.isOk)
-
     const booksPromises = books.map(async (item) => {
       try {
         const book = await db.Book.findOne({

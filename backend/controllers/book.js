@@ -32,7 +32,6 @@ async function getBooks(req, res, next) {
     category,
     page,
     size,
-    price,
     order_type = "ASC",
     order_item = "name",
   } = req.query;
@@ -67,11 +66,6 @@ async function getBooks(req, res, next) {
     const response = getPagingData(data, page, limit);
     return res.send(response);
 
-    // const books = await db.Book.findAndCountAll(dbQuery);
-
-    // return res.status(200).json({
-    //     books
-    // });
   } catch (error) {
     console.log("Get Books Error:", error);
     return res.status(500).json({
@@ -79,19 +73,6 @@ async function getBooks(req, res, next) {
     });
   }
 }
-
-const getAllBooks = async (req, res) => {
-  try {
-    const bookList = await db.Book.findAll();
-
-    return res.status(201).json(bookList);
-  } catch (error) {
-    console.log("Get All Books Error:", error);
-    return res.status(500).json({
-      error: error.message,
-    });
-  }
-};
 
 const getBookPage = async (req, res) => {
   const { id } = req.params;
